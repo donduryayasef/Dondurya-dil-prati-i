@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Günlük Yaşam Dil Pratiği</title>
+    <meta name="description" content="8 dilli günlük yaşam pratik testi. Ücretsiz online dil oyunu.">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 520px;
+            box-sizing: border-box;
+        }
+        .screen {
+            display: none;
+        }
+        .screen.active {
+            display: block;
+        }
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .lives {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .back-btn {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            padding: 8px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            color: #475569;
+        }
+        select {
+            padding: 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 2px solid #cbd5e1;
+            width: 100%;
+            cursor: pointer;
+            background-color: #f8fafc;
+            color: #1e293b;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            text-align: center;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        p.desc {
+            color: #666;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+        .start-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .start-btn:active {
+            background-color: #0056b3;
+        }
+        .errors-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block;
+        }
+        .errors-btn:active {
+            background-color: #5a6268;
+        }
+        .refill-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+        }
+        .refill-btn {
+            background-color: #ffc107;
+            color: #212529;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .quiz-container {
+            margin-top: 15px;
+        }
+        .question-title {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 15px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 14px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            line-height: 1.4;
+        }
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 14px 15px;
+            text-align: left;
+            border-radius: 8px;
+            font-size: 15px;
+            color: #334155;
+            cursor: pointer;
+        }
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: #c3e6cb !important;
+            color: #155724;
+            font-weight: 600;
+        }
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: #f5c6cb !important;
+            color: #721c24;
+            font-weight: 600;
+        }
+        .feedback-msg {
+            text-align: center;
+            font-weight: bold;
+            font-size: 14px;
+            margin-top: 15px;
+            min-height: 20px;
+        }
+        .score-box {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #28a745;
+            margin-top: 20px;
+        }
+        .next-btn {
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            display: none;
+        }
+        .error-item {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+        .error-q {
+            font-weight: bold;
+            color: #1e293b;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+        .error-ans {
+            color: #155724;
+            font-size: 13px;
+            background: #d4edda;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <!-- ANA EKRAN -->
+        <div id="homeScreen" class="screen active">
+            <h1>🌍 Günlük Yaşam Dil Pratiği</h1>
+            <p class="desc">Yetkinlik temelli yaklaşım ve günlük hayatta karşılaşılabilecek senaryolara dayalı dinamik testi çözmeye başla!</p>
+            
+            <select id="languageSelector">
+                <option value="en">English (İngilizce)</option>
+                <option value="es">Español (İspanyolca)</option>
+                <option value="de">Deutsch (Almanca)</option>
+                <option value="fr">Français (Fransızca)</option>
+                <option value="it">Italiano (İtalyanca)</option>
+                <option value="ru">Русский (Rusça)</option>
+                <option value="ko">한국어 (Korece)</option>
+                <option value="ja">日本語 (Japonca)</option>
+            </select>
+
+            <button type="button" class="start-btn" onclick="startQuiz()">Derse / Teste Başla</button>
+            <button type="button" class="errors-btn" onclick="openErrorsScreen()">❌ Hatalarım</button>
+
+            <!-- Can Bittiğinde Çıkacak Alan -->
+            <div id="refillBox" class="refill-box">
+                <p style="margin: 0 0 5px 0; font-weight: bold;">Canın bittiği için yeni oyuna başlayamazsın!</p>
+                <button type="button" class="refill-btn" onclick="startLifeLessons()">3 Can Dersi Yap (Canları Yenile)</button>
+            </div>
+            
+            <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:15px;">© 2026 - Tüm Hakları Saklıdır</p>
+        </div>
+
+        <!-- TEST EKRANI -->
+        <div id="quizScreen" class="screen">
+            <div class="top-bar">
+                <button type="button" class="back-btn" onclick="goHome()">⬅ Menü</button>
+                <div id="livesDisplay" class="lives">❤️❤️❤️</div>
+            </div>
+
+            <h1 id="heading">Test</h1>
+            <p id="description" class="desc">Aşağıdaki günlük yaşam senaryosuna uygun ifadeyi seçiniz.</p>
+
+            <div id="quizContainer" class="quiz-container"></div>
+            <div id="feedbackMsg" class="feedback-msg"></div>
+            
+            <button type="button" id="nextBtn" class="next-btn" onclick="nextQuestion()">Sonraki Soru</button>
+            <div id="scoreBox" class="score-box"></div>
+        </div>
+
+        <!-- HATALAR EKRANI -->
+        <div id="errorsScreen" class="screen">
+            <div class="top-bar">
+                <button type="button" class="back-btn" onclick="goHome()">⬅ Menü</button>
+            </div>
+            <h1 style="color: #e74c3c;">❌ Yanlış Yapılan Sorular</h1>
+            <p class="desc">Testler sırasında yanlış yaptığın soruların doğru yanıtları:</p>
+            
+            <div id="errorsContainer" style="max-height: 350px; overflow-y: auto;">
+                <!-- Dinamik olarak dolacak -->
+            </div>
+        </div>
+
+        <!-- CAN DERSİ EKRANI -->
+        <div id="lifeLessonScreen" class="screen">
+            <h1 style="color: #d97706;" id="lessonHeading">💡 Can Dersi (1/3)</h1>
+            <p class="desc">3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!</p>
+
+            <div class="quiz-container">
+                <div class="question-title" id="lessonTitle">Günlük Yaşam Pratiği: ...</div>
+                <div class="options-list" id="lessonOptions">
+                    <!-- Dinamik olarak dolacak -->
+                </div>
+            </div>
+            <div id="lessonFeedback" class="feedback-msg"></div>
+        </div>
+    </div>
+
+    <script>
+        const rawQuizData = {
+            en: {
+                heading: "English - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "Yabancı bir şehirde metro istasyonunu arıyorsunuz ve yoldan geçen birine sormanız gerekiyor. Ne dersiniz?", options: ["Where is the nearest subway station?", "What time is it?", "How much is this book?", "I am hungry."], correct: 0 },
+                    { q: "Bir kafede garson masanıza geldi ve siparişinizi vermenizi bekliyor. Kahve istediğinizi nasıl belirtirsiniz?", options: ["I want to pay the bill.", "Can I have a cup of coffee, please?", "Where is the restroom?", "Open the window."], correct: 1 },
+                    { q: "Mağazada beğendiğiniz bir tişörtün fiyatını öğrenmek istiyorsunuz. Kasiyere ne sormalısınız?", options: ["Do you speak English?", "How much does this t-shirt cost?", "What is your name?", "Where are you from?"], correct: 1 },
+                    { q: "Havaalanında pasaport kontrolünde görevli sizden pasaportunuzu istiyor. Bu durumu anlatan en doğru ifade hangisidir?", options: ["Show me your ticket.", "Here is my passport.", "I lost my luggage.", "The plane is delayed."], correct: 1 },
+                    { q: "Arkadaşınız size harika bir haber verdi ve çok mutlu oldunuz. Ona karşılık olarak ne söylersiniz?", options: ["I am very sorry.", "That's wonderful news!", "I don't know.", "See you tomorrow."], correct: 1 },
+                    { q: "Otele giriş yapıyorsunuz ve resepsiyonist odanızın anahtarını veriyor. Ona teşekkür etmek için ne dersiniz?", options: ["Goodbye", "Thank you, have a nice day.", "Excuse me", "Nice to meet you too."], correct: 1 },
+                    { q: "Market alışverişi yaparken aradığınız sütün nerede olduğunu bulamadınız. Görevliye nasıl sormalısınız?", options: ["Where can I find the milk?", "Do you like milk?", "Is the market open?", "Can I help you?"], correct: 0 },
+                    { q: "Yolda yürürken yanlışlıkla birinin ayağına bastınız. Karşı taraftan hemen nasıl özür dilersiniz?", options: ["Thank you very much.", "I'm sorry / Excuse me.", "You are welcome.", "Good afternoon."], correct: 1 },
+                    { q: "Restoranda yemeğinizi yediniz ve hesabı istiyorsunuz. Garsona ne demelisiniz?", options: ["The bill, please.", "More water, please.", "The food is cold.", "Where is the chef?"], correct: 0 },
+                    { q: "Telefonla konuşurken karşı tarafın sesi gelmiyor veya bağlantı kopuyor. Ne dersiniz?", options: ["Who are you?", "Can you hear me now?", "I am calling from home.", "Turn off your phone."], correct: 1 },
+                    { q: "Toplantıya geç kaldınız ve içeri girerken özür dilemeniz gerekiyor. Ne dersiniz?", options: ["Sorry I am late.", "See you later.", "Have a nice day.", "Good morning."], correct: 0 },
+                    { q: "Hava limanındasınız ve uçağınızın kapısını (gate) bulamıyorsunuz. Bilgi ekranına bakarken görevliye ne sorarsınız?", options: ["Where is boarding gate 5?", "What is your job?", "Do you like flying?", "Who is the pilot?"], correct: 0 }
+                ]
+            },
+            es: {
+                heading: "Español - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "Şehir merkezinde metro istasyonunu arıyorsunuz. İspanyolca nasıl sorarsınız?", options: ["¿Dónde está la estación de metro más cercana?", "¿Qué hora es?", "¿Cuánto cuesta?", "Tengo hambre."], correct: 0 },
+                    { q: "Bir kafede kahve sipariş etmek istiyorsunuz. Garsona ne söylersiniz?", options: ["Quiero pagar.", "Un café, por favor.", "¿Dónde está el baño?", "Abra la ventana."], correct: 1 },
+                    { q: "Mağazada bir ürünün fiyatını soracaksınız:", options: ["¿Habla inglés?", "¿Cuánto cuesta esto?", "¿Cómo se llama?", "¿De dónde es?"], correct: 1 },
+                    { q: "Görevliye pasaportunuzu uzatırken ne dersiniz:", options: ["Aquí tiene mi pasaporte.", "Busco mi maleta.", "El avión sale tarde.", "Tengo un boleto."], correct: 0 },
+                    { q: "Güzel bir haber aldığınızdaki tepkiniz:", options: ["Lo siento mucho.", "¡Qué buena noticia!", "No sé.", "Hasta mañana."], correct: 1 },
+                    { q: "Otel resepsiyonistine teşekkür ederken:", options: ["Adiós", "Gracias, que tenga un buen día.", "Con permiso", "Mucho gusto."], correct: 1 },
+                    { q: "Markette süt arıyorsunuz:", options: ["¿Dónde puedo encontrar la leche?", "¿Le gusta la leche?", "¿Está abierto?", "¿Ayuda?"], correct: 0 },
+                    { q: "Yanlışlıkla birine çarptığınızda:", options: ["Muchas gracias.", "Lo siento / Disculpe.", "De nada.", "Buenas tardes."], correct: 1 },
+                    { q: "Hesabı isteyeceksiniz:", options: ["La cuenta, por favor.", "Más agua, por favor.", "La comida está fría.", "¿Dónde está el chef?"], correct: 0 },
+                    { q: "Telefonda karşı tarafa sesin gelip gelmediğini sorarken:", options: ["¿Quién es?", "¿Me escuchas?", "Llamo desde casa.", "Apague el teléfono."], correct: 1 }
+                ]
+            },
+            de: {
+                heading: "Deutsch - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "Trenden indiniz ve metro istasyonunu arıyorsunuz:", options: ["Wo ist die nächste U-Bahn-Station?", "Wie spät ist es?", "Was kostet das?", "Ich habe Hunger."], correct: 0 },
+                    { q: "Kafede bir fincan kahve siparişi:", options: ["Ich möchte bezahlen.", "Ich hätte gerne eine Tasse Kaffee, bitte.", "Wo ist die Toilette?", "Öffnen Sie das Fenster."], correct: 1 },
+                    { q: "Mağazada fiyat sorarken:", options: ["Sprechen Sie Englisch?", "Wie viel kostet das?", "Wie heißt du?", "Woher kommst du?"], correct: 1 },
+                    { q: "Pasaport kontrolünde pasaportunuzu uzatırken:", options: ["Hier ist mein Reisepass.", "Ich habe mein Gepäck verloren.", "Der Flug verspätet sich.", "Zeigen Sie mir das Ticket."], correct: 0 },
+                    { q: "Harika bir haber duyduğunuzda:", options: ["Es tut mir leid.", "Das ist wunderbare Nachrichten!", "Ich weiß nicht.", "Auf Wiedersehen."], correct: 1 },
+                    { q: "Otelden ayrılırken veya teşekkür ederken:", options: ["Tschüss", "Danke, einen schönen Tag noch.", "Entschuldigung", "Sehr erfreut."], correct: 1 },
+                    { q: "Süpermarkette süt reyonunu ararken:", options: ["Wo finde ich Milch?", "Magst du Milch?", "Ist der Markt offen?", "Kann ich helfen?"], correct: 0 },
+                    { q: "Yanlışlıkla birine çarptığınızda özür dileme:", options: ["Vielen Dank.", "Entschuldigung.", "Bitte schön.", "Guten Tag."], correct: 1 },
+                    { q: "Restoranda hesap isteme:", options: ["Die Rechnung, bitte.", "Mehr Wasser, bitte.", "Das Essen ist kalt.", "Wo ist der Koch?"], correct: 0 },
+                    { q: "Telefonda karşı tarafa sesin ulaşıp ulaşmadığını sorma:", options: ["Wer ist da?", "Kannst du mich hören?", "Ich rufe von zu Hause an.", "Schalte das Handy aus."], correct: 1 }
+                ]
+            },
+            fr: {
+                heading: "Français - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "Şehirde metro istasyonunu sormak istiyorsunuz:", options: ["Où est la station de métro la plus proche ?", "Quelle heure est-il ?", "C'est combien ?", "J'ai faim."], correct: 0 },
+                    { q: "Kafede kahve siparişi verirken:", options: ["Je veux payer.", "Un café, s'il vous plaît.", "Où sont les toilettes ?", "Ouvrez la fenêtre."], correct: 1 },
+                    { q: "Mağazada fiyat öğrenirken:", options: ["Parlez-vous anglais ?", "Combien ça coûte ?", "Comment vous appelez-vous ?", "D'où venez-vous ?"], correct: 1 },
+                    { q: "Pasaportunuzu görevliye sunarken:", options: ["Voici mon passeport.", "J'ai perdu ma valise.", "L'avion est en retard.", "Montrez-moi votre billet."], correct: 0 },
+                    { q: "Güzel bir habere verilecek tepki:", options: ["Je suis désolé.", "C'est une excellente nouvelle !", "Je ne sais pas.", "À demain."], correct: 1 },
+                    { q: "Otelde teşekkür ederken:", options: ["Au revoir", "Merci, bonne journée.", "Pardon", "Enchanté."], correct: 1 },
+                    { q: "Markette süt arıyorsunuz:", options: ["Où est le lait ?", "Aimes-tu le lait ?", "Le magasin est ouvert ?", "Puis-je aider ?"], correct: 0 },
+                    { q: "Birine çarptığınızda özür dilerken:", options: ["Merci beaucoup.", "Pardon / Excusez-moi.", "De rien.", "Bon après-midi."], correct: 1 },
+                    { q: "Hesabı isteyeceksiniz:", options: ["L'addition, s'il vous plaît.", "De l'eau, s'il vous plaît.", "La nourriture est froide.", "Où est le chef ?"], correct: 0 },
+                    { q: "Telefonda konuşurken sesin gelip gelmediğini sorarken:", options: ["C'est qui ?", "Tu m'entends ?", "J'appelle de chez moi.", "Éteins ton téléphone."], correct: 1 }
+                ]
+            },
+            it: {
+                heading: "Italiano - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "Roma'da metro istasyonunu arıyorsunuz. İtalyanca nasıl sorarsınız?", options: ["Dov'è la stazione della metropolitana più vicina?", "Che ora è?", "Quanto costa?", "Ho fame."], correct: 0 },
+                    { q: "Bir kafede kahve sipariş ediyorsunuz:", options: ["Voglio pagare.", "Un caffè, per favore.", "Dov'è il bagno?", "Apri la finestra."], correct: 1 },
+                    { q: "Mağazada tişörtün fiyatını sorarken:", options: ["Parli inglese?", "Quanto costa questa maglietta?", "Come ti chiami?", "Di dove sei?"], correct: 1 },
+                    { q: "Havaalanında pasaportunuzu gösterirken:", options: ["Ecco il mio passaporto.", "Ho perso la valigia.", "L'aereo è in ritardo.", "Dammi il biglietto."], correct: 0 },
+                    { q: "Güzel bir habere verilecek tepki:", options: ["Mi dispiace molto.", "Che bellissima notizia!", "Non lo so.", "A domani."], correct: 1 },
+                    { q: "Otelde resepsiyona teşekkür ederken:", options: ["Arrivederci", "Grazie, buona giornata.", "Permesso", "Piacere."], correct: 1 },
+                    { q: "Süpermarkette süt arıyorsunuz:", options: ["Dove posso trovare il latte?", "Ti piace il latte?", "Il negozio è aperto?", "Posso aiutarti?"], correct: 0 },
+                    { q: "Yanlışlıkla birine çarptığınızda özür dileme:", options: ["Mille grazie.", "Scusa / Mi scusi.", "Prego.", "Buon pomeriggio."], correct: 1 },
+                    { q: "Restoranda hesabı isteme:", options: ["Il conto, per favore.", "Più acqua, per favore.", "Il cibo è freddo.", "Dov'è lo chef?"], correct: 0 },
+                    { q: "Telefonda sesin gelip gelmediğini sorma:", options: ["Chi è?", "Mi senti?", " Chiamo da casa.", "Spegni il telefono."], correct: 1 }
+                ]
+            },
+            ru: {
+                heading: "Русский - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "В незнакомом городе вы ищете станцию метро. Как спросить прохожего?", options: ["Где ближайшая станция метро?", "Сколько времени?", "Сколько это стоит?", "Я хочу есть."], correct: 0 },
+                    { q: "В кафе вы заказываете чашку кофе:", options: ["Я хочу заплатить.", "Можно чашку кофе, пожалуйста?", "Где туалет?", "Откройте окно."], correct: 1 },
+                    { q: "В магазине вы хотите узнать цену футболки:", options: ["Вы говорите по-английски?", "Сколько стоит эта футболка?", "Как вас зовут?", "Откуда вы?"], correct: 1 },
+                    { q: "В аэропорту на паспортном контроле вы даете паспорт:", options: ["Вот мой паспорт.", "Я потерял багаж.", "Самолет задерживается.", "Покажите билет."], correct: 0 },
+                    { q: "Когда вам сообщают отличную новость:", options: ["Мне очень жаль.", "Это замечательные новости!", "Я не знаю.", "До завтра."], correct: 1 },
+                    { q: "В отеле при выезде вы благодарите сотрудника:", options: ["До свидания", "Спасибо, хорошего дня.", "Извините", "Очень приятно."], correct: 1 },
+                    { q: "В супермаркете вы ищете молоко:", options: ["Где я могу найти молоко?", "Ты любишь молоко?", "Магазин открыт?", "Могу я помочь?"], correct: 0 },
+                    { q: "Если вы случайно толкнули человека:", options: ["Большое спасибо.", "Извините.", "Пожалуйста.", "Добрый день."], correct: 1 },
+                    { q: "В ресторане вы просите счет:", options: ["Счет, пожалуйста.", "Принесите воды.", "Еда холодная.", "Где шеф-повар?"], correct: 0 },
+                    { q: "Разговаривая по телефону, вы проверяете связь:", options: ["Кто это?", "Ты меня слышишь?", "Я звоню из дома.", "Выключи телефон."], correct: 1 }
+                ]
+            },
+            ko: {
+                heading: "한국어 - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "지하철역을 찾고 있습니다. 길에서 물어볼 때 어떻게 말하나요?", options: ["가장 가까운 지하철역이 어디에 있나요?", "지금 몇 시예요?", "이것은 얼마예요?", "배고파요."], correct: 0 },
+                    { q: "카페에서 커피를 주문할 때:", options: ["계산할게요.", "커피 한 잔 주세요.", "화장실이 어디예요?", "창문을 열어주세요."], correct: 1 },
+                    { q: "가게에서 티셔츠 가격을 물어볼 때:", options: ["영어 할 수 있어요?", "이 티셔츠는 얼마예요?", "이름이 뭐예요?", "고향이 어디예요?"], correct: 1 },
+                    { q: "공항 여권 심사대에서 여권을 건넬 때:", options: ["여권 여기 있습니다.", "짐을 잃어버렸어요.", "비행기가 연기되었어요.", "표를 보여주세요."], correct: 0 },
+                    { q: "좋은 소식을 들었을 때 반응:", options: ["정말 유감입니다.", "정말 잘 된 소식이네요!", "몰라요.", "내일 봐요."], correct: 1 },
+                    { q: "호텔에서 체크아웃하며 감사 인사를 할 때:", options: ["안녕히 가세요", "감사합니다. 좋은 하루 보내세요.", "실례합니다", "만나서 반가워요."], correct: 1 },
+                    { q: "마트에서 우유를 찾을 때:", options: ["우유 어디서 찾을 수 있어요?", "우유 좋아해요?", "마트 문 열었나요?", "도와드릴까요?"], correct: 0 },
+                    { q: "실수로 다른 사람의 발을 밟았을 때:", options: ["정말 감사합니다.", "죄송합니다 / 실례합니다.", "천만에요.", "안녕하세요."], correct: 1 },
+                    { q: "식당에서 계산서를 요청할 때:", options: ["계산서 주세요.", "물 좀 더 주세요.", "음식이 차가워요.", "주방장이 어디 있어요?"], correct: 0 },
+                    { q: "전화 통화 중 상대방 목소리가 잘 안 들릴 때:", options: ["누구세요?", "내 목소리 들려요?", "집에서 전화해요.", "전화 꺼요."], correct: 1 }
+                ]
+            },
+            ja: {
+                heading: "日本語 - Günlük Yaşam Senaryoları",
+                questions: [
+                    { q: "見知らぬ街で地下鉄の駅を探しています。道行く人にどう尋ねますか？", options: ["一番近い地下鉄の駅はどこですか？", "何時ですか？", "これはいくらですか？", "お腹が空きました。"], correct: 0 },
+                    { q: "カフェでコーヒーを注文したい時：", options: ["お会計をお願いします。", "コーヒーを一杯ください。", "お手洗いはどこですか？", "窓を開けてください。"], correct: 1 },
+                    { q: "お店でTシャツの値段を聞きたい時：", options: ["英語を話せますか？", "このTシャツはいくらですか？", "お名前は何ですか？", "ご出身はどちらですか？"], correct: 1 },
+                    { q: "空港のパスポートコントロールでパスポートを渡す時：", options: ["パスポートはこちらです。", "荷物をなくしました。", "飛行機が遅れています。", "切符を見せてください。"], correct: 0 },
+                    { q: "素晴らしいニュースを聞いた時の反応：", options: ["それはお気の毒に。", "それは素晴らしいニュースですね！", "分かりません。", "また明日。"], correct: 1 },
+                    { q: "ホテルのフロントで感謝を伝える時：", options: ["さようなら", "ありがとうございます。良い一日を。", "すみません", "はじめまして。"], correct: 1 },
+                    { q: "スーパーで牛乳を探している時：", options: ["牛乳はどこにありますか？", "牛乳は好きですか？", "お店は開いていますか？", "お手伝いしましょうか？"], correct: 0 },
+                    { q: "うっかり人の足を踏んでしまった時：", options: ["どうもありがとうございます。", "すみません。", "どういたしまして。", "こんにちは。"], correct: 1 },
+                    { q: "レストランでお会計を頼む時：", options: ["お勘定をお願いします。", "お水をもう少しください。", "料理が冷めています。", "シェフはどこですか？"], correct: 0 },
+                    { q: "電話で相手の声が聞こえているか確認する時：", options: ["どちら様ですか？", "聞こえますか？", "家から電話しています。", "電話を切ってください。"], correct: 1 }
+                ]
+            }
+        };
+
+        const lifeLessonPool = [
+            {
+                q: "Günlük Yaşam Pratiği: Sabah insanları selamlamak için hangisi kullanılır?",
+                options: ["Good night", "Good morning", "Goodbye"],
+                correct: 1
+            },
+            {
+                q: "Günlük Yaşam Pratiği: Birine teşekkür ederken hangisini söylersiniz?",
+                options: ["Thank you", "I am sorry", "Excuse me"],
+                correct: 0
+            },
+            {
+                q: "Günlük Yaşam Pratiği: Ayrılırken veya veda ederken hangisi söylenir?",
+                options: ["Hello", "Good morning", "Goodbye"],
+                correct: 2
+            },
+            {
+                q: "Günlük Yaşam Pratiği: Birinin dikkatini çekmek veya affedersiniz demek için hangisi kullanılır?",
+                options: ["Excuse me", "Thank you", "Good night"],
+                correct: 0
+            },
+            {
+                q: "Günlük Yaşam Pratiği: Akşam vakti birileriyle karşılaşıldığında ne denir?",
+                options: ["Good morning", "Good evening", "Goodbye"],
+                correct: 1
+            }
+        ];
+
+        let currentLang = "en";
+        let activeQuestions = [];
+        let currentIndex = 0;
+        let score = 0;
+        let lives = 3;
+        let wrongAttemptsOnCurrentQuestion = 0;
+        let userErrors = [];
+        let currentLesson = null;
+        let currentLessonStep = 1;
+
+        function shuffleArray(array) {
+            let arr = [...array];
+            for (let i = arr.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [arr[i], arr[j]] = [arr[j], arr[i]];
+            }
+            return arr;
+        }
+
+        function updateLivesDisplay() {
+            let hearts = "";
+            for (let i = 0; i < lives; i++) {
+                hearts += "❤️";
+            }
+            document.getElementById("livesDisplay").innerText = hearts;
+        }
+
+        function updateMenuState() {
+            const refillBox = document.getElementById("refillBox");
+            if (lives <= 0) {
+                refillBox.style.display = "block";
+            } else {
+                refillBox.style.display = "none";
+            }
+        }
+
+        function startQuiz() {
+            if (lives <= 0) {
+                alert("Canın bittiği için şu an oynayamazsın! Lütfen '3 Can Dersi Yap' butonuna basarak dersleri tamamla.");
+                return;
+            }
+
+            currentLang = document.getElementById("languageSelector").value;
+            currentIndex = 0;
+            score = 0;
+            wrongAttemptsOnCurrentQuestion = 0;
+
+            const allPool = rawQuizData[currentLang].questions;
+            const shuffledPool = shuffleArray(allPool);
+            const selectedPool = shuffledPool.slice(0, 10);
+
+            activeQuestions = selectedPool.map(item => {
+                let indexedOptions = item.options.map((opt, idx) => ({ text: opt, isCorrect: idx === item.correct }));
+                let shuffledOptions = shuffleArray(indexedOptions);
+                let newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+                return {
+                    q: item.q,
+                    options: shuffledOptions.map(o => o.text),
+                    correct: newCorrectIndex
+                };
+            });
+
+            document.getElementById("heading").innerText = rawQuizData[currentLang].heading;
+            document.getElementById("scoreBox").innerText = "";
+            document.getElementById("nextBtn").style.display = "none";
+            updateLivesDisplay();
+
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("quizScreen").classList.add("active");
+
+            loadQuestion();
+        }
+
+        function goHome() {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("homeScreen").classList.add("active");
+            updateMenuState();
+        }
+
+        function openErrorsScreen() {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("errorsScreen").classList.add("active");
+
+            const container = document.getElementById("errorsContainer");
+            if (userErrors.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: #666; font-style: italic;">Henüz kaydedilmiş bir hatan yok. Harika gidiyorsun!</p>`;
+            } else {
+                container.innerHTML = userErrors.map(err => `
+                    <div class="error-item">
+                        <div class="error-q">❓ ${err.question}</div>
+                        <div class="error-ans">✅ Doğru Cevap: ${err.correctAnswer}</div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function startLifeLessons() {
+            currentLessonStep = 1;
+            loadNextLessonStep();
+        }
+
+        function loadNextLessonStep() {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("lifeLessonScreen").classList.add("active");
+            document.getElementById("lessonHeading").innerText = `💡 Can Dersi (${currentLessonStep}/3)`;
+            document.getElementById("lessonFeedback").innerText = "";
+
+            const randomIndex = Math.floor(Math.random() * lifeLessonPool.length);
+            const originalLesson = lifeLessonPool[randomIndex];
+
+            let indexedOptions = originalLesson.options.map((opt, idx) => ({ text: opt, isCorrect: idx === originalLesson.correct }));
+            let shuffledOptions = shuffleArray(indexedOptions);
+            let newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+            currentLesson = {
+                q: originalLesson.q,
+                options: shuffledOptions.map(o => o.text),
+                correct: newCorrectIndex
+            };
+
+            document.getElementById("lessonTitle").innerText = currentLesson.q;
+            
+            const optionsContainer = document.getElementById("lessonOptions");
+            optionsContainer.innerHTML = currentLesson.options.map((opt, idx) => `
+                <button type="button" class="option-btn" onclick="checkLessonAnswer(${idx})">${opt}</button>
+            `).join('');
+        }
+
+        function checkLessonAnswer(selectedIndex) {
+            const btns = document.querySelectorAll("#lessonOptions .option-btn");
+            const feedback = document.getElementById("lessonFeedback");
+            const correctIndex = currentLesson.correct;
+
+            btns.forEach(b => b.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                btns[selectedIndex].classList.add("correct");
+                feedback.style.color = "#28a745";
+
+                if (currentLessonStep < 3) {
+                    feedback.innerText = `Doğru! ${currentLessonStep}. ders tamamlandı. Sonraki derse geçiliyor...`;
+                    currentLessonStep++;
+                    setTimeout(loadNextLessonStep, 1800);
+                } else {
+                    feedback.innerText = "Tebrikler! 3 dersi de başarıyla tamamladın ve 3 can kazandın!";
+                    lives = 3;
+                    setTimeout(goHome, 2000);
+                }
+            } else {
+                btns[selectedIndex].classList.add("wrong");
+                btns[correctIndex].classList.add("correct");
+                feedback.style.color = "#e74c3c";
+                feedback.innerText = "Yanlış cevap! Bu ders adımı baştan denenecek...";
+                setTimeout(loadNextLessonStep, 2200);
+            }
+        }
+
+        function loadQuestion() {
+            wrongAttemptsOnCurrentQuestion = 0;
+            document.getElementById("feedbackMsg").innerText = "";
+            document.getElementById("nextBtn").style.display = "none";
+
+            const data = activeQuestions[currentIndex];
+            const container = document.getElementById("quizContainer");
+
+            container.innerHTML = `
+                <div class="question-title">Soru ${currentIndex + 1}/${activeQuestions.length}: ${data.q}</div>
+                <div class="options-list">
+                    ${data.options.map((opt, index) => `
+                        <button type="button" class="option-btn" onclick="checkAnswer(${index})">${opt}</button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function checkAnswer(selectedOptionIndex) {
+            const data = activeQuestions[currentIndex];
+            const buttons = document.querySelectorAll(".option-btn");
+            const feedbackMsg = document.getElementById("feedbackMsg");
+
+            if (selectedOptionIndex === data.correct) {
+                buttons[selectedOptionIndex].classList.add("correct");
+                buttons.forEach(btn => btn.disabled = true);
+                feedbackMsg.style.color = "#28a745";
+                feedbackMsg.innerText = "Harika, doğru cevap!";
+                score++;
+                checkGameFlow();
+            } else {
+                wrongAttemptsOnCurrentQuestion++;
+
+                if (wrongAttemptsOnCurrentQuestion === 1) {
+                    buttons[selectedOptionIndex].classList.add("wrong");
+                    buttons[selectedOptionIndex].disabled = true;
+                    feedbackMsg.style.color = "#e67e22";
+                    feedbackMsg.innerText = "Yanlış! İstersen tekrar deneyelim.";
+                } else {
+                    buttons[selectedOptionIndex].classList.add("wrong");
+                    buttons[data.correct].classList.add("correct");
+                    buttons.forEach(btn => btn.disabled = true);
+                    
+                    if (!userErrors.some(e => e.question === data.q)) {
+                        userErrors.push({
+                            question: data.q,
+                            correctAnswer: data.options[data.correct]
+                        });
+                    }
+
+                    lives--;
+                    updateLivesDisplay();
+
+                    feedbackMsg.style.color = "#e74c3c";
+                    if (lives > 0) {
+                        feedbackMsg.innerText = "Üzgünüm, 1 canın gitti!";
+                        checkGameFlow();
+                    } else {
+                        feedbackMsg.innerText = "Canın bitti! Ana menüye dönülüyor...";
+                        setTimeout(goHome, 2000); 
+                    }
+                }
+            }
+        }
+
+        function checkGameFlow() {
+            const totalQuestions = activeQuestions.length;
+            if (currentIndex < totalQuestions - 1) {
+                document.getElementById("nextBtn").style.display = "block";
+            } else {
+                document.getElementById("scoreBox").innerText = `Tebrikler! Test bitti. Puanın: ${score} / ${totalQuestions}`;
+                setTimeout(goHome, 3000);
+            }
+        }
+
+        function nextQuestion() {
+            currentIndex++;
+            loadQuestion();
+        }
+
+        updateMenuState();
+    </script>
+
+</body>
+</html>
