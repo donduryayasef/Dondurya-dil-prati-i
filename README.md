@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Günlük Yaşam Dil Pratiği</title>
+    <title id="pageTitle">Günlük Yaşam Dil Pratiği v1.1</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -24,6 +24,8 @@
             width: 100%;
             max-width: 520px;
             box-sizing: border-box;
+            position: relative;
+            padding-bottom: 75px;
         }
         .screen {
             display: none;
@@ -31,18 +33,34 @@
         .screen.active {
             display: block;
         }
+        .top-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
         .lang-flags-container {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 12px;
+            gap: 10px;
+        }
+        .streak-badge {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            color: #c2410c;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
         .flag-btn {
             background: transparent;
             border: 2px solid #cbd5e1;
             border-radius: 8px;
-            padding: 6px 12px;
-            font-size: 20px;
+            padding: 4px 10px;
+            font-size: 18px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -117,6 +135,20 @@
         }
         .errors-btn {
             background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .shop-btn {
+            background-color: #8b5cf6;
             color: white;
             border: none;
             padding: 14px;
@@ -237,6 +269,33 @@
             padding: 6px 10px;
             border-radius: 6px;
         }
+        /* Sol alttaki 8 köşeli mavi yıldızlı tıklanabilir buton */
+        .sparkle-widget-btn {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 10px;
+            padding: 6px 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #1e40af;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+        }
+        .sparkle-widget-btn:hover {
+            background-color: #dbeafe;
+            border-color: #2563eb;
+        }
+        .eight-point-star {
+            font-size: 18px;
+            line-height: 1;
+        }
     </style>
 </head>
 <body>
@@ -244,9 +303,12 @@
     <div class="card">
         <!-- ANA EKRAN -->
         <div id="homeScreen" class="screen active">
-            <div class="lang-flags-container">
-                <button type="button" id="trFlagBtn" class="flag-btn active-flag" onclick="setAppLanguage('tr')" title="Türkçe">🇹🇷</button>
-                <button type="button" id="enFlagBtn" class="flag-btn" onclick="setAppLanguage('en')" title="English">🇬🇧</button>
+            <div class="top-info-bar">
+                <div class="lang-flags-container">
+                    <button type="button" id="trFlagBtn" class="flag-btn active-flag" onclick="setAppLanguage('tr')" title="Türkçe">🇹🇷</button>
+                    <button type="button" id="enFlagBtn" class="flag-btn" onclick="setAppLanguage('en')" title="English">🇬🇧</button>
+                </div>
+                <div id="streakBadge" class="streak-badge">🔥 0 Gün</div>
             </div>
 
             <h1 id="mainTitle">🌍 Günlük Yaşam Dil Pratiği</h1>
@@ -265,13 +327,18 @@
 
             <button type="button" id="startQuizBtnText" class="start-btn" onclick="startQuiz()">Derse / Teste Başla</button>
             <button type="button" id="errorsBtnText" class="errors-btn" onclick="openErrorsScreen()">❌ Hatalarım</button>
+            <button type="button" id="shopBtnText" class="shop-btn" onclick="openShopScreen()">📚 Mağaza & Ödüller</button>
 
             <div id="refillBox" class="refill-box">
                 <p id="refillMsgTitle" style="margin: 0 0 5px 0; font-weight: bold;">Canın bittiği için yeni oyuna başlayamazsın!</p>
                 <button type="button" id="refillBtnText" class="refill-btn" onclick="startLifeLessons()">3 Can Dersi Yap (Canları Yenile)</button>
             </div>
             
-            <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:15px;">© 2026 - Tüm Hakları Saklıdır</p>
+            <!-- Sol alttaki 8 köşeli mavi yıldızlı tıklanabilir market butonu -->
+            <button type="button" class="sparkle-widget-btn" onclick="openShopScreen()" title="Mağazaya Git">
+                <span class="eight-point-star">✴️</span>
+                <span id="sparkleCountText">0 Kıvılcım</span>
+            </button>
         </div>
 
         <!-- TEST EKRANI -->
@@ -302,6 +369,23 @@
             <div id="errorsContainer" style="max-height: 350px; overflow-y: auto;"></div>
         </div>
 
+        <!-- MAĞAZA EKRANI -->
+        <div id="shopScreen" class="screen">
+            <div class="top-bar">
+                <button type="button" id="shopBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
+            </div>
+            <h1 id="shopHeading" style="color: #8b5cf6;">📚 Mağaza & Ödüller</h1>
+            <p id="shopDesc" class="desc">7 günlük serileri tamamlayarak **10 Kitap** kazanabilir, **20 Kitap** ile **Seri Kıvılcımı** satın alabilirsin!</p>
+            
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #334155;" id="myBooksText">Sahip Olunan Kitaplar: 0 📖</p>
+                <p style="margin: 0; font-size: 13px; color: #64748b;" id="streakProgressText">7 Günlük Seri İlerlemesi: 0/7 Gün</p>
+            </div>
+
+            <button type="button" id="buySparkleBtn" class="start-btn" style="background-color: #8b5cf6;" onclick="buySparkle()">20 Kitap Karşılığı Seri Kıvılcımı Satın Al ✴️</button>
+            <div id="shopFeedback" class="feedback-msg"></div>
+        </div>
+
         <!-- CAN DERSİ EKRANI -->
         <div id="lifeLessonScreen" class="screen">
             <h1 style="color: #d97706;" id="lessonHeading">💡 Can Dersi (1/3)</h1>
@@ -316,6 +400,36 @@
     </div>
 
     <script>
+        // Veri Saklama ve Seri Kontrolü (Meta AI Önerisiyle Kıvılcım Koruma Entegre Edildi)
+        let userStreak = parseInt(localStorage.getItem("userStreak")) || 0;
+        let lastQuizDate = localStorage.getItem("lastQuizDate") || "";
+        let userBooks = parseInt(localStorage.getItem("userBooks")) || 0;
+        let userSparkles = parseInt(localStorage.getItem("userSparkles")) || 0;
+        let streakClaimedToday = localStorage.getItem("streakClaimedToday") === "true";
+
+        function checkStreakOnLoad() {
+            const todayStr = new Date().toDateString();
+            if (lastQuizDate && lastQuizDate !== todayStr) {
+                const yesterday = new Date();
+                yesterday.setDate(yesterday.getDate() - 1);
+                if (lastQuizDate !== yesterday.toDateString()) {
+                    // Seri Kıvılcımı Kontrolü (Seriyi Kurtarma)
+                    if (userSparkles > 0) {
+                        userSparkles--;
+                        localStorage.setItem("userSparkles", userSparkles);
+                        alert("1 gün girmedin ama Seri Kıvılcımı seni kurtardı! 🔥✴️");
+                        userStreak++; // Seri devam eder
+                    } else {
+                        userStreak = 0; // Kıvılcım yoksa seri maalesef sıfırlanır
+                    }
+                    streakClaimedToday = false;
+                    localStorage.setItem("userStreak", userStreak);
+                    localStorage.setItem("streakClaimedToday", "false");
+                }
+            }
+        }
+        checkStreakOnLoad();
+
         const uiTexts = {
             tr: {
                 pageTitle: "Günlük Yaşam Dil Pratiği",
@@ -323,6 +437,7 @@
                 mainDesc: "Yetkinlik temelli yaklaşım ve günlük hayatta karşılaşılabilecek senaryolara dayalı dinamik testi çözmeye başla!",
                 startBtn: "Derse / Teste Başla",
                 errorsBtn: "❌ Hatalarım",
+                shopBtn: "📚 Mağaza & Ödüller",
                 refillMsg: "Canın bittiği için yeni oyuna başlayamazsın!",
                 refillBtn: "3 Can Dersi Yap (Canları Yenile)",
                 backMenu: "⬅ Menü",
@@ -341,6 +456,16 @@
                 gameOver: "Tebrikler! Test bitti. Puanın:",
                 blockedPlayAlert: "Canın bittiği için şu an oynayamazsın! Lütfen '3 Can Dersi Yap' butonuna basarak dersleri tamamla.",
                 questionLabel: "Soru",
+                shopHeading: "📚 Mağaza & Ödüller",
+                shopDesc: "7 günlük serileri tamamlayarak **10 Kitap** kazanabilir, **20 Kitap** ile **Seri Kıvılcımı** satın alabilirsin!",
+                buySparkleBtnText: "20 Kitap Karşılığı Seri Kıvılcımı Satın Al ✴️",
+                streakBadgeText: (s) => `🔥 ${s} Gün`,
+                sparkleText: (sp) => `${sp} Kıvılcım`,
+                booksText: (b) => `Sahip Olunan Kitaplar: ${b} 📖`,
+                streakProgress: (s) => `7 Günlük Seri İlerlemesi: ${s % 7}/7 Gün`,
+                streakRewardMsg: "🎉 Tebrikler! 7 günlük seriyi tamamladın ve 10 Kitap ödülü kazandın!",
+                notEnoughBooks: "Yeterli kitabın yok! Seri Kıvılcımı almak için 20 kitaba ihtiyacın var.",
+                boughtSuccess: "Başarıyla 1 Seri Kıvılcımı satın aldın! ✴️",
                 quizTitles: {
                     en: "English - Daily Life Scenarios",
                     es: "Español - Daily Life Scenarios",
@@ -358,6 +483,7 @@
                 mainDesc: "Start solving the dynamic test based on a competency-based approach and real-life scenarios!",
                 startBtn: "Start Lesson / Quiz",
                 errorsBtn: "❌ My Mistakes",
+                shopBtn: "📚 Shop & Rewards",
                 refillMsg: "You cannot start a new game because you are out of lives!",
                 refillBtn: "Take 3 Life Lessons (Refill Lives)",
                 backMenu: "⬅ Menu",
@@ -376,6 +502,16 @@
                 gameOver: "Congratulations! Quiz finished. Your score:",
                 blockedPlayAlert: "You cannot play right now because you are out of lives! Please click 'Take 3 Life Lessons' to complete the lessons.",
                 questionLabel: "Question",
+                shopHeading: "📚 Shop & Rewards",
+                shopDesc: "Complete 7-day streaks to earn **10 Books**, and use **20 Books** to buy a **Streak Sparkle**!",
+                buySparkleBtnText: "Buy Streak Sparkle for 20 Books ✴️",
+                streakBadgeText: (s) => `🔥 ${s} Days`,
+                sparkleText: (sp) => `${sp} Sparkles`,
+                booksText: (b) => `Owned Books: ${b} 📖`,
+                streakProgress: (s) => `7-Day Streak Progress: ${s % 7}/7 Days`,
+                streakRewardMsg: "🎉 Congratulations! You completed a 7-day streak and earned 10 Books reward!",
+                notEnoughBooks: "You don't have enough books! You need 20 books to buy a Streak Sparkle.",
+                boughtSuccess: "Successfully bought 1 Streak Sparkle! ✴️",
                 quizTitles: {
                     en: "English - Daily Life Scenarios",
                     es: "Spanish - Daily Life Scenarios",
@@ -408,19 +544,32 @@
             document.getElementById("mainDesc").innerText = t.mainDesc;
             document.getElementById("startQuizBtnText").innerText = t.startBtn;
             document.getElementById("errorsBtnText").innerText = t.errorsBtn;
+            document.getElementById("shopBtnText").innerText = t.shopBtn;
             document.getElementById("refillMsgTitle").innerText = t.refillMsg;
             document.getElementById("refillBtnText").innerText = t.refillBtn;
             document.getElementById("backMenu").innerText = t.backMenu;
             document.getElementById("errorBackBtn").innerText = t.backMenu;
+            document.getElementById("shopBackBtn").innerText = t.backMenu;
             document.getElementById("description").innerText = t.quizDefaultDesc;
             document.getElementById("nextBtn").innerText = t.nextBtn;
             document.getElementById("errorHeaderTitle").innerText = t.errorHeaderTitle;
             document.getElementById("errorHeaderDesc").innerText = t.errorHeaderDesc;
+            document.getElementById("shopHeading").innerText = t.shopHeading;
+            document.getElementById("shopDesc").innerHTML = t.shopDesc;
+            document.getElementById("buySparkleBtn").innerText = t.buySparkleBtnText;
+
+            updateHomeWidgets();
 
             const currentSelectedLang = document.getElementById("languageSelector").value;
             if (document.getElementById("quizScreen").classList.contains("active")) {
                 document.getElementById("heading").innerText = rawQuizData[currentSelectedLang].heading[appLang];
             }
+        }
+
+        function updateHomeWidgets() {
+            const t = uiTexts[appLang];
+            document.getElementById("streakBadge").innerText = t.streakBadgeText(userStreak);
+            document.getElementById("sparkleCountText").innerText = t.sparkleText(userSparkles);
         }
 
         const rawQuizData = {
@@ -590,6 +739,27 @@
             } else {
                 refillBox.style.display = "none";
             }
+            updateHomeWidgets();
+        }
+
+        function handleStreakAfterCompletion() {
+            const todayStr = new Date().toDateString();
+            if (lastQuizDate !== todayStr) {
+                if (!streakClaimedToday) {
+                    userStreak++;
+                    // Her 7 günde bir 10 kitap ver
+                    if (userStreak > 0 && userStreak % 7 === 0) {
+                        userBooks += 10;
+                        alert(uiTexts[appLang].streakRewardMsg);
+                    }
+                    streakClaimedToday = true;
+                }
+                lastQuizDate = todayStr;
+                localStorage.setItem("userStreak", userStreak);
+                localStorage.setItem("lastQuizDate", lastQuizDate);
+                localStorage.setItem("userBooks", userBooks);
+                localStorage.setItem("streakClaimedToday", streakClaimedToday);
+            }
         }
 
         function startQuiz() {
@@ -651,6 +821,38 @@
                         <div class="error-ans">✅ ${t.correctAnswerText}: ${err.correctAnswer}</div>
                     </div>
                 `).join('');
+            }
+        }
+
+        function openShopScreen() {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("shopScreen").classList.add("active");
+            
+            const t = uiTexts[appLang];
+            document.getElementById("myBooksText").innerText = t.booksText(userBooks);
+            document.getElementById("streakProgressText").innerText = t.streakProgress(userStreak);
+            document.getElementById("shopFeedback").innerText = "";
+        }
+
+        function buySparkle() {
+            const t = uiTexts[appLang];
+            const feedback = document.getElementById("shopFeedback");
+
+            if (userBooks >= 20) {
+                userBooks -= 20;
+                userSparkles++;
+                localStorage.setItem("userBooks", userBooks);
+                localStorage.setItem("userSparkles", userSparkles);
+
+                document.getElementById("myBooksText").innerText = t.booksText(userBooks);
+                document.getElementById("streakProgressText").innerText = t.streakProgress(userStreak);
+                updateHomeWidgets();
+
+                feedback.style.color = "#28a745";
+                feedback.innerText = t.boughtSuccess;
+            } else {
+                feedback.style.color = "#e74c3c";
+                feedback.innerText = t.notEnoughBooks;
             }
         }
 
@@ -792,6 +994,7 @@
             if (currentIndex < totalQuestions - 1) {
                 document.getElementById("nextBtn").style.display = "block";
             } else {
+                handleStreakAfterCompletion();
                 document.getElementById("scoreBox").innerText = `${t.gameOver} ${score} / ${totalQuestions}`;
                 setTimeout(goHome, 3000);
             }
@@ -807,4 +1010,3 @@
 
 </body>
 </html>
-
