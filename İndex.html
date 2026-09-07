@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Günlük Yaşam Dil Pratiği</title>
+    <title id="pageTitle">Günlük Yaşam Dil Pratiği</title>
+    <meta name="description" content="8 dilli günlük yaşam pratik testi. Ücretsiz online dil oyunu.">
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -30,6 +31,29 @@
         }
         .screen.active {
             display: block;
+        }
+        .lang-flags-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 12px;
+        }
+        .flag-btn {
+            background: transparent;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .flag-btn:hover {
+            border-color: #007bff;
+            background-color: #f8fafc;
+        }
+        .flag-btn.active-flag {
+            border-color: #007bff;
+            background-color: #e2e8f0;
         }
         .top-bar {
             display: flex;
@@ -227,8 +251,14 @@
     <div class="card">
         <!-- ANA EKRAN -->
         <div id="homeScreen" class="screen active">
-            <h1>🌍 Günlük Yaşam Dil Pratiği</h1>
-            <p class="desc">Yetkinlik temelli yaklaşım ve günlük hayatta karşılaşılabilecek senaryolara dayalı dinamik testi çözmeye başla!</p>
+            <!-- Bayrak Butonları -->
+            <div class="lang-flags-container">
+                <button type="button" id="trFlagBtn" class="flag-btn active-flag" onclick="setAppLanguage('tr')" title="Türkçe">🇹🇷</button>
+                <button type="button" id="enFlagBtn" class="flag-btn" onclick="setAppLanguage('en')" title="English">🇬🇧</button>
+            </div>
+
+            <h1 id="mainTitle">🌍 Günlük Yaşam Dil Pratiği</h1>
+            <p id="mainDesc" class="desc">Yetkinlik temelli yaklaşım ve günlük hayatta karşılaşılabilecek senaryolara dayalı dinamik testi çözmeye başla!</p>
             
             <select id="languageSelector">
                 <option value="en">English (İngilizce)</option>
@@ -241,13 +271,13 @@
                 <option value="ja">日本語 (Japonca)</option>
             </select>
 
-            <button type="button" class="start-btn" onclick="startQuiz()">Derse / Teste Başla</button>
-            <button type="button" class="errors-btn" onclick="openErrorsScreen()">❌ Hatalarım</button>
+            <button type="button" id="startQuizBtnText" class="start-btn" onclick="startQuiz()">Derse / Teste Başla</button>
+            <button type="button" id="errorsBtnText" class="errors-btn" onclick="openErrorsScreen()">❌ Hatalarım</button>
 
             <!-- Can Bittiğinde Çıkacak Alan -->
             <div id="refillBox" class="refill-box">
-                <p style="margin: 0 0 5px 0; font-weight: bold;">Canın bittiği için yeni oyuna başlayamazsın!</p>
-                <button type="button" class="refill-btn" onclick="startLifeLessons()">3 Can Dersi Yap (Canları Yenile)</button>
+                <p id="refillMsgTitle" style="margin: 0 0 5px 0; font-weight: bold;">Canın bittiği için yeni oyuna başlayamazsın!</p>
+                <button type="button" id="refillBtnText" class="refill-btn" onclick="startLifeLessons()">3 Can Dersi Yap (Canları Yenile)</button>
             </div>
             
             <p style="text-align:center; font-size:12px; color:#94a3b8; margin-top:15px;">© 2026 - Tüm Hakları Saklıdır</p>
@@ -256,7 +286,7 @@
         <!-- TEST EKRANI -->
         <div id="quizScreen" class="screen">
             <div class="top-bar">
-                <button type="button" class="back-btn" onclick="goHome()">⬅ Menü</button>
+                <button type="button" id="backMenuBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
                 <div id="livesDisplay" class="lives">❤️❤️❤️</div>
             </div>
 
@@ -273,10 +303,10 @@
         <!-- HATALAR EKRANI -->
         <div id="errorsScreen" class="screen">
             <div class="top-bar">
-                <button type="button" class="back-btn" onclick="goHome()">⬅ Menü</button>
+                <button type="button" id="errorBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
             </div>
-            <h1 style="color: #e74c3c;">❌ Yanlış Yapılan Sorular</h1>
-            <p class="desc">Testler sırasında yanlış yaptığın soruların doğru yanıtları:</p>
+            <h1 id="errorHeaderTitle" style="color: #e74c3c;">❌ Yanlış Yapılan Sorular</h1>
+            <p id="errorHeaderDesc" class="desc">Testler sırasında yanlış yaptığın soruların doğru yanıtları:</p>
             
             <div id="errorsContainer" style="max-height: 350px; overflow-y: auto;">
                 <!-- Dinamik olarak dolacak -->
@@ -286,7 +316,7 @@
         <!-- CAN DERSİ EKRANI -->
         <div id="lifeLessonScreen" class="screen">
             <h1 style="color: #d97706;" id="lessonHeading">💡 Can Dersi (1/3)</h1>
-            <p class="desc">3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!</p>
+            <p id="lessonDescText" class="desc">3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!</p>
 
             <div class="quiz-container">
                 <div class="question-title" id="lessonTitle">Günlük Yaşam Pratiği: ...</div>
@@ -299,6 +329,89 @@
     </div>
 
     <script>
+        // Arayüz Çevirileri (Türkçe ve İngilizce)
+        const uiTexts = {
+            tr: {
+                pageTitle: "Günlük Yaşam Dil Pratiği",
+                mainTitle: "🌍 Günlük Yaşam Dil Pratiği",
+                mainDesc: "Yetkinlik temelli yaklaşım ve günlük hayatta karşılaşılabilecek senaryolara dayalı dinamik testi çözmeye başla!",
+                startBtn: "Derse / Teste Başla",
+                errorsBtn: "❌ Hatalarım",
+                refillMsg: "Canın bittiği için yeni oyuna başlayamazsın!",
+                refillBtn: "3 Can Dersi Yap (Canları Yenile)",
+                backMenu: "⬅ Menü",
+                quizDefaultDesc: "Aşağıdaki günlük yaşam senaryosuna uygun ifadeyi seçiniz.",
+                nextBtn: "Sonraki Soru",
+                errorHeaderTitle: "❌ Yanlış Yapılan Sorular",
+                errorHeaderDesc: "Testler sırasında yanlış yaptığın soruların doğru yanıtları:",
+                noErrors: "Henüz kaydedilmiş bir hatan yok. Harika gidiyorsun!",
+                correctAnswerText: "Doğru Cevap",
+                lessonDesc: "3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!",
+                lessonPrefix: "💡 Can Dersi",
+                correctMsg: "Harika, doğru cevap!",
+                wrongFirstMsg: "Yanlış! İstersen tekrar deneyelim.",
+                wrongSecondMsg: "Üzgünüm, 1 canın gitti!",
+                outOfLivesMsg: "Canın bitti! Ana menüye dönülüyor...",
+                gameOver: "Tebrikler! Test bitti. Puanın:",
+                blockedPlayAlert: "Canın bittiği için şu an oynayamazsın! Lütfen '3 Can Dersi Yap' butonuna basarak dersleri tamamla."
+            },
+            en: {
+                pageTitle: "Daily Life Language Practice",
+                mainTitle: "🌍 Daily Life Language Practice",
+                mainDesc: "Start solving the dynamic test based on a competency-based approach and real-life scenarios!",
+                startBtn: "Start Lesson / Quiz",
+                errorsBtn: "❌ My Mistakes",
+                refillMsg: "You cannot start a new game because you are out of lives!",
+                refillBtn: "Take 3 Life Lessons (Refill Lives)",
+                backMenu: "⬅ Menu",
+                quizDefaultDesc: "Choose the appropriate expression for the daily life scenario below.",
+                nextBtn: "Next Question",
+                errorHeaderTitle: "❌ Incorrectly Answered Questions",
+                errorHeaderDesc: "Correct answers to the questions you got wrong during tests:",
+                noErrors: "You have no saved mistakes yet. You're doing great!",
+                correctAnswerText: "Correct Answer",
+                lessonDesc: "Answer 3 reinforcement questions correctly in a row to fully recover your 3 lives!",
+                lessonPrefix: "💡 Life Lesson",
+                correctMsg: "Great, correct answer!",
+                wrongFirstMsg: "Incorrect! Let's try again if you want.",
+                wrongSecondMsg: "Sorry, you lost 1 life!",
+                outOfLivesMsg: "Out of lives! Returning to the main menu...",
+                gameOver: "Congratulations! Quiz finished. Your score:",
+                blockedPlayAlert: "You cannot play right now because you are out of lives! Please click 'Take 3 Life Lessons' to complete the lessons."
+            }
+        };
+
+        let appLang = "tr"; // Varsayılan arayüz dili
+
+        function setAppLanguage(lang) {
+            appLang = lang;
+            const t = uiTexts[lang];
+
+            // Aktif bayrak butonunu görsel olarak güncelle
+            if (lang === 'tr') {
+                document.getElementById("trFlagBtn").classList.add("active-flag");
+                document.getElementById("enFlagBtn").classList.remove("active-flag");
+            } else {
+                document.getElementById("enFlagBtn").classList.add("active-flag");
+                document.getElementById("trFlagBtn").classList.remove("active-flag");
+            }
+
+            // Arayüz metinlerini güncelle
+            document.getElementById("pageTitle").innerText = t.pageTitle;
+            document.getElementById("mainTitle").innerText = t.mainTitle;
+            document.getElementById("mainDesc").innerText = t.mainDesc;
+            document.getElementById("startQuizBtnText").innerText = t.startBtn;
+            document.getElementById("errorsBtnText").innerText = t.errorsBtn;
+            document.getElementById("refillMsgTitle").innerText = t.refillMsg;
+            document.getElementById("refillBtnText").innerText = t.refillBtn;
+            document.getElementById("backMenu").innerText = t.backMenu;
+            document.getElementById("errorBackBtn").innerText = t.backMenu;
+            document.getElementById("description").innerText = t.quizDefaultDesc;
+            document.getElementById("nextBtn").innerText = t.nextBtn;
+            document.getElementById("errorHeaderTitle").innerText = t.errorHeaderTitle;
+            document.getElementById("errorHeaderDesc").innerText = t.errorHeaderDesc;
+        }
+
         const rawQuizData = {
             en: {
                 heading: "English - Günlük Yaşam Senaryoları",
@@ -490,7 +603,7 @@
 
         function startQuiz() {
             if (lives <= 0) {
-                alert("Canın bittiği için şu an oynayamazsın! Lütfen '3 Can Dersi Yap' butonuna basarak dersleri tamamla.");
+                alert(uiTexts[appLang].blockedPlayAlert);
                 return;
             }
 
@@ -536,14 +649,15 @@
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById("errorsScreen").classList.add("active");
 
+            const t = uiTexts[appLang];
             const container = document.getElementById("errorsContainer");
             if (userErrors.length === 0) {
-                container.innerHTML = `<p style="text-align: center; color: #666; font-style: italic;">Henüz kaydedilmiş bir hatan yok. Harika gidiyorsun!</p>`;
+                container.innerHTML = `<p style="text-align: center; color: #666; font-style: italic;">${t.noErrors}</p>`;
             } else {
                 container.innerHTML = userErrors.map(err => `
                     <div class="error-item">
                         <div class="error-q">❓ ${err.question}</div>
-                        <div class="error-ans">✅ Doğru Cevap: ${err.correctAnswer}</div>
+                        <div class="error-ans">✅ ${t.correctAnswerText}: ${err.correctAnswer}</div>
                     </div>
                 `).join('');
             }
@@ -557,7 +671,10 @@
         function loadNextLessonStep() {
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById("lifeLessonScreen").classList.add("active");
-            document.getElementById("lessonHeading").innerText = `💡 Can Dersi (${currentLessonStep}/3)`;
+            
+            const t = uiTexts[appLang];
+            document.getElementById("lessonHeading").innerText = `${t.lessonPrefix} (${currentLessonStep}/3)`;
+            document.getElementById("lessonDescText").innerText = t.lessonDesc;
             document.getElementById("lessonFeedback").innerText = "";
 
             const randomIndex = Math.floor(Math.random() * lifeLessonPool.length);
@@ -585,6 +702,7 @@
             const btns = document.querySelectorAll("#lessonOptions .option-btn");
             const feedback = document.getElementById("lessonFeedback");
             const correctIndex = currentLesson.correct;
+            const t = uiTexts[appLang];
 
             btns.forEach(b => b.disabled = true);
 
@@ -593,11 +711,11 @@
                 feedback.style.color = "#28a745";
 
                 if (currentLessonStep < 3) {
-                    feedback.innerText = `Doğru! ${currentLessonStep}. ders tamamlandı. Sonraki derse geçiliyor...`;
+                    feedback.innerText = appLang === 'tr' ? `Doğru! ${currentLessonStep}. ders tamamlandı. Sonraki derse geçiliyor...` : `Correct! Lesson ${currentLessonStep} completed. Moving to next lesson...`;
                     currentLessonStep++;
                     setTimeout(loadNextLessonStep, 1800);
                 } else {
-                    feedback.innerText = "Tebrikler! 3 dersi de başarıyla tamamladın ve 3 can kazandın!";
+                    feedback.innerText = appLang === 'tr' ? "Tebrikler! 3 dersi de başarıyla tamamladın ve 3 can kazandın!" : "Congratulations! You successfully completed all 3 lessons and earned 3 lives!";
                     lives = 3;
                     setTimeout(goHome, 2000);
                 }
@@ -605,7 +723,7 @@
                 btns[selectedIndex].classList.add("wrong");
                 btns[correctIndex].classList.add("correct");
                 feedback.style.color = "#e74c3c";
-                feedback.innerText = "Yanlış cevap! Bu ders adımı baştan denenecek...";
+                feedback.innerText = appLang === 'tr' ? "Yanlış cevap! Bu ders adımı baştan denenecek..." : "Wrong answer! This lesson step will be retried...";
                 setTimeout(loadNextLessonStep, 2200);
             }
         }
@@ -617,9 +735,10 @@
 
             const data = activeQuestions[currentIndex];
             const container = document.getElementById("quizContainer");
+            const qPrefix = appLang === 'tr' ? "Soru" : "Question";
 
             container.innerHTML = `
-                <div class="question-title">Soru ${currentIndex + 1}/${activeQuestions.length}: ${data.q}</div>
+                <div class="question-title">${qPrefix} ${currentIndex + 1}/${activeQuestions.length}: ${data.q}</div>
                 <div class="options-list">
                     ${data.options.map((opt, index) => `
                         <button type="button" class="option-btn" onclick="checkAnswer(${index})">${opt}</button>
@@ -632,12 +751,13 @@
             const data = activeQuestions[currentIndex];
             const buttons = document.querySelectorAll(".option-btn");
             const feedbackMsg = document.getElementById("feedbackMsg");
+            const t = uiTexts[appLang];
 
             if (selectedOptionIndex === data.correct) {
                 buttons[selectedOptionIndex].classList.add("correct");
                 buttons.forEach(btn => btn.disabled = true);
                 feedbackMsg.style.color = "#28a745";
-                feedbackMsg.innerText = "Harika, doğru cevap!";
+                feedbackMsg.innerText = t.correctMsg;
                 score++;
                 checkGameFlow();
             } else {
@@ -647,7 +767,7 @@
                     buttons[selectedOptionIndex].classList.add("wrong");
                     buttons[selectedOptionIndex].disabled = true;
                     feedbackMsg.style.color = "#e67e22";
-                    feedbackMsg.innerText = "Yanlış! İstersen tekrar deneyelim.";
+                    feedbackMsg.innerText = t.wrongFirstMsg;
                 } else {
                     buttons[selectedOptionIndex].classList.add("wrong");
                     buttons[data.correct].classList.add("correct");
@@ -665,10 +785,10 @@
 
                     feedbackMsg.style.color = "#e74c3c";
                     if (lives > 0) {
-                        feedbackMsg.innerText = "Üzgünüm, 1 canın gitti!";
+                        feedbackMsg.innerText = t.wrongSecondMsg;
                         checkGameFlow();
                     } else {
-                        feedbackMsg.innerText = "Canın bitti! Ana menüye dönülüyor...";
+                        feedbackMsg.innerText = t.outOfLivesMsg;
                         setTimeout(goHome, 2000); 
                     }
                 }
@@ -677,10 +797,11 @@
 
         function checkGameFlow() {
             const totalQuestions = activeQuestions.length;
+            const t = uiTexts[appLang];
             if (currentIndex < totalQuestions - 1) {
                 document.getElementById("nextBtn").style.display = "block";
             } else {
-                document.getElementById("scoreBox").innerText = `Tebrikler! Test bitti. Puanın: ${score} / ${totalQuestions}`;
+                document.getElementById("scoreBox").innerText = `${t.gameOver} ${score} / ${totalQuestions}`;
                 setTimeout(goHome, 3000);
             }
         }
