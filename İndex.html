@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Günlük Yaşam Dil Pratiği v1.6</title>
+    <title id="pageTitle">Günlük Yaşam Dil Pratiği v2.0</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -82,6 +82,7 @@
             font-size: 18px;
             font-weight: bold;
             color: #e74c3c;
+            display: none;
         }
         .back-btn {
             background: #f1f5f9;
@@ -93,7 +94,7 @@
             font-weight: 600;
             color: #475569;
         }
-        select {
+        select, input[type="text"] {
             padding: 14px;
             font-size: 16px;
             border-radius: 8px;
@@ -112,13 +113,6 @@
             margin-top: 5px;
             margin-bottom: 10px;
         }
-        p.desc {
-            color: #666;
-            font-size: 14px;
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.5;
-        }
         .menu-btn {
             border: none;
             padding: 14px;
@@ -136,6 +130,7 @@
         .errors-btn { background-color: #6c757d; }
         .shop-btn { background-color: #8b5cf6; }
         .league-btn { background-color: #f59e0b; }
+        .friends-btn { background-color: #10b981; }
 
         .refill-box {
             background-color: #fff3cd;
@@ -159,7 +154,7 @@
             margin-top: 10px;
         }
         .quiz-container {
-            margin-top: 15px;
+            margin-top: 5px;
         }
         .question-title {
             font-weight: bold;
@@ -367,8 +362,7 @@
                 <div id="streakBadge" class="streak-badge">🔥 0 Gün</div>
             </div>
 
-            <h1 id="mainTitle">🌍 Günlük Yaşam Dil Pratiği v1.6</h1>
-            <p id="mainDesc" class="desc">Günlük Elmas Ligleri, Prestij Sistemi ve Kademeli Rozetler!</p>
+            <h1 id="mainTitle">🌍 Günlük Yaşam Dil Pratiği</h1>
             
             <select id="languageSelector">
                 <option value="en">English (İngilizce)</option>
@@ -385,6 +379,7 @@
             <button type="button" id="errorsBtnText" class="menu-btn errors-btn" onclick="openErrorsScreen()">❌ Hatalarım</button>
             <button type="button" id="shopBtnText" class="menu-btn shop-btn" onclick="openShopScreen()">📚 Mağaza & Ödüller</button>
             <button type="button" id="leagueBtnText" class="menu-btn league-btn" onclick="openLeagueScreen()">🏆 Lig & Sıralama</button>
+            <button type="button" id="friendsBtnText" class="menu-btn friends-btn" onclick="openFriendsScreen()">👥 Arkadaşlar & Ekle</button>
 
             <div id="refillBox" class="refill-box">
                 <p id="refillMsgTitle" style="margin: 0 0 5px 0; font-weight: bold;">Canın bittiği için yeni oyuna başlayamazsın!</p>
@@ -410,8 +405,7 @@
                 <div id="livesDisplay" class="lives">❤️❤️❤️</div>
             </div>
 
-            <h1 id="heading">Test</h1>
-            <p id="description" class="desc">Aşağıdaki günlük yaşam senaryosuna en uygun ve doğru ifadeyi seçiniz.</p>
+            <h1 id="heading" style="display: block;">🌍 Günlük Yaşam Dil Pratiği</h1>
 
             <div id="quizContainer" class="quiz-container"></div>
             <div id="feedbackMsg" class="feedback-msg"></div>
@@ -425,8 +419,8 @@
             <div class="top-bar">
                 <button type="button" id="errorBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
             </div>
-            <h1 id="errorHeaderTitle" style="color: #e74c3c;">❌ Yanlış Yapılan Sorular</h1>
-            <p id="errorHeaderDesc" class="desc">Testler sırasında yanlış yaptığın çeldiricilere takıldığın soruların doğru yanıtları:</p>
+            <h1 id="errorHeaderTitle" style="color: #e74c3c; display: block;">❌ Yanlış Yapılan Sorular</h1>
+            <p id="errorHeaderDesc" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px; line-height: 1.5; display: block;">Testler sırasında yanlış yaptığın çeldiricilere takıldığın soruların doğru yanıtları:</p>
             
             <div id="errorsContainer" style="max-height: 350px; overflow-y: auto;"></div>
         </div>
@@ -436,8 +430,8 @@
             <div class="top-bar">
                 <button type="button" id="shopBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
             </div>
-            <h1 id="shopHeading" style="color: #8b5cf6;">📚 Mağaza & Ödüller</h1>
-            <p id="shopDesc" class="desc">7 günlük serileri tamamlayarak **10 Kitap** kazanabilir, **20 Kitap** ile **Seri Kıvılcımı** satın alabilirsin!</p>
+            <h1 id="shopHeading" style="color: #8b5cf6; display: block;">📚 Mağaza & Ödüller</h1>
+            <p id="shopDesc" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px; line-height: 1.5; display: block;">7 günlük serileri tamamlayarak **10 Kitap** kazanabilir, **20 Kitap** ile **Seri Kıvılcımı** satın alabilirsin!</p>
             
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; margin-bottom: 15px; text-align: center;">
                 <p style="margin: 0 0 8px 0; font-weight: bold; color: #334155;" id="myBooksText">Sahip Olunan Kitaplar: 0 📖</p>
@@ -453,10 +447,34 @@
             <div class="top-bar">
                 <button type="button" id="leagueBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
             </div>
-            <h1 id="leagueHeading" style="color: #f59e0b;">💎 Elmas Lig Sıralaması</h1>
-            <p id="leagueDesc" class="desc">İlk 3'e girerek üst aşamaya yüksel, Final'de 1. olarak Prestij Rozeti kazan!</p>
+            <h1 id="leagueHeading" style="color: #f59e0b; display: block;">💎 Elmas Lig Sıralaması</h1>
+            <p id="leagueDesc" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px; line-height: 1.5; display: block;">İlk 3'e girerek üst aşamaya yüksel, Final'de 1. olarak Prestij Rozeti kazan!</p>
             
             <div id="leagueContainer" style="max-height: 330px; overflow-y: auto;"></div>
+        </div>
+
+        <!-- ARKADAŞLAR EKRANI -->
+        <div id="friendsScreen" class="screen">
+            <div class="top-bar">
+                <button type="button" id="friendsBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
+            </div>
+            
+            <!-- İstediğin gibi AD DÜZENLE / EKLE başlığı ve butonu en üstte -->
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+                <p style="margin: 0 0 8px 0; font-weight: bold; color: #1e293b; font-size: 14px;" id="nicknameSectionTitle">AD DÜZENLE / EKLE</p>
+                <input type="text" id="nicknameInput" placeholder="Takma adınızı girin..." style="margin-bottom: 10px;">
+                <button type="button" id="saveNicknameBtn" class="menu-btn start-btn" style="padding: 10px; margin-bottom: 0;" onclick="saveNickname()">Takma Adı Kaydet</button>
+            </div>
+
+            <h1 id="friendsHeading" style="color: #10b981; display: block;">👥 Arkadaş Ekle & Listesi</h1>
+            <p id="friendsDesc" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 15px; line-height: 1.5; display: block;">Arkadaşının kullanıcı adını yazarak arkadaş olarak ekle:</p>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+                <input type="text" id="friendUsernameInput" placeholder="Arkadaş kullanıcı adı..." style="margin-bottom: 0;">
+                <button type="button" id="addFriendActionBtn" class="menu-btn start-btn" style="width: 120px; margin-bottom: 0; background-color: #10b981;" onclick="addFriend()">Ekle</button>
+            </div>
+
+            <div id="friendsContainer" style="max-height: 220px; overflow-y: auto;"></div>
         </div>
 
         <!-- ROZETLER EKRANI -->
@@ -464,16 +482,16 @@
             <div class="top-bar">
                 <button type="button" id="badgesBackBtn" class="back-btn" onclick="goHome()">⬅ Menü</button>
             </div>
-            <h1 id="badgesHeading" style="color: #f59e0b;">👑 Prestij Rozetlerim</h1>
-            <p id="badgesDesc" class="desc">Liglerde elde ettiğin başarılara göre açılan özel unvanlar ve rozetler:</p>
+            <h1 id="badgesHeading" style="color: #f59e0b; display: block;">👑 Prestij Rozetlerim</h1>
+            <p id="badgesDesc" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px; line-height: 1.5; display: block;">Liglerde elde ettiğin başarılara göre açılan özel unvanlar ve rozetler:</p>
             
             <div id="badgesContainer" style="max-height: 330px; overflow-y: auto;"></div>
         </div>
 
         <!-- CAN DERSİ EKRANI -->
         <div id="lifeLessonScreen" class="screen">
-            <h1 style="color: #d97706;" id="lessonHeading">💡 Can Dersi (1/3)</h1>
-            <p id="lessonDescText" class="desc">3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!</p>
+            <h1 style="color: #d97706; display: block;" id="lessonHeading">💡 Can Dersi (1/3)</h1>
+            <p id="lessonDescText" style="color: #666; font-size: 14px; text-align: center; margin-bottom: 25px; line-height: 1.5; display: block;">3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!</p>
 
             <div class="quiz-container">
                 <div class="question-title" id="lessonTitle">Günlük Yaşam Pratiği: ...</div>
@@ -491,16 +509,17 @@
         let streakClaimedToday = localStorage.getItem("streakClaimedToday") === "true";
         let userXP = parseInt(localStorage.getItem("userXP")) || 0;
         let userBadges = parseInt(localStorage.getItem("userBadges")) || 0;
-        let leagueStage = localStorage.getItem("leagueStage") || "quarter"; // "quarter", "semi", "final"
+        let leagueStage = localStorage.getItem("leagueStage") || "quarter";
         let lastLeagueReset = localStorage.getItem("lastLeagueReset") || "";
 
-        // Rozet Durumları (Kilitler)
-        let badgeApprentice = localStorage.getItem("badgeApprentice") === "true"; // Elmas Çırağı
-        let badgeMaster = localStorage.getItem("badgeMaster") === "true";         // Elmas Ustası
-        let badgePro = localStorage.getItem("badgePro") === "true";               // Elmas Prosu
-        let badgePower = localStorage.getItem("badgePower") === "true";           // Elmas Gücü
+        let userNickname = localStorage.getItem("userNickname") || "Sen";
+        let friendList = JSON.parse(localStorage.getItem("friendList")) || [];
 
-        // Bot Rakipler
+        let badgeApprentice = localStorage.getItem("badgeApprentice") === "true";
+        let badgeMaster = localStorage.getItem("badgeMaster") === "true";
+        let badgePro = localStorage.getItem("badgePro") === "true";
+        let badgePower = localStorage.getItem("badgePower") === "true";
+
         let botScores = JSON.parse(localStorage.getItem("botScores")) || [
             { name: "AlphaBot-01", xp: 140 },
             { name: "NeuralSynth-X", xp: 120 },
@@ -538,13 +557,10 @@
         function checkDailyLeagueReset() {
             const todayStr = new Date().toDateString();
             if (lastLeagueReset !== todayStr && lastLeagueReset !== "") {
-                let rankingList = [...botScores, { name: "Sen", xp: userXP }];
+                let rankingList = [...botScores, { name: userNickname, xp: userXP }];
                 rankingList.sort((a, b) => b.xp - a.xp);
-                let userRank = rankingList.findIndex(r => r.name === "Sen") + 1;
+                let userRank = rankingList.findIndex(r => r.name === userNickname) + 1;
 
-                let isChampion = false;
-
-                // 1. ELMAS FİNALİ 1.LİĞİ -> ELMAS GÜCÜ & PRESTİJ (ÇEYREĞE DÖN)
                 if (leagueStage === "final" && userRank === 1) {
                     userBadges++;
                     if (!badgePower) {
@@ -552,17 +568,14 @@
                         localStorage.setItem("badgePower", "true");
                     }
                     leagueStage = "quarter"; 
-                    isChampion = true;
-                    alert(`👑 ELMAS GÜCÜ & ŞAMPİYON! 💎 Rozet +1 kazandın!\nElmas Finalleri 1.liği rozeti açıldı! Çeyrek Final'e döndün.`);
-                } 
-                // 2. NORMAL YÜKSELME / DÜŞME VE AŞAMA ROZETLERİ
-                else if (userRank <= 3 && leagueStage !== "final") {
+                    alert(`👑 ELMAS GÜCÜ & ŞAMPİYON! 💎 Rozet +1 kazandın!\nElmas Finalleri 1.liği açıldı! Çeyrek Final'e döndün.`);
+                } else if (userRank <= 3 && leagueStage !== "final") {
                     if (leagueStage === "quarter") {
                         leagueStage = "semi";
                         if (!badgeApprentice) {
                             badgeApprentice = true;
                             localStorage.setItem("badgeApprentice", "true");
-                            alert(`🥉 Yeni Rozet Açıldı: Elmas Çırağı! (Çeyrek Final İlk 3)`);
+                            alert(`🥉 Yeni Rozet Açıldı: Elmas Çırağı!`);
                         }
                         alert(`🚀 İlk 3! Elmas Yarı Final aşamasına yükseldin!`);
                     } else if (leagueStage === "semi") {
@@ -570,31 +583,23 @@
                         if (!badgeMaster) {
                             badgeMaster = true;
                             localStorage.setItem("badgeMaster", "true");
-                            alert(`🥈 Yeni Rozet Açıldı: Elmas Ustası! (Yarı Final İlk 3)`);
+                            alert(`🥈 Yeni Rozet Açıldı: Elmas Ustası!`);
                         }
                         alert(`🚀 İlk 3! Elmas Final aşamasına yükseldin!`);
                     }
-                } 
-                // 3. FİNAL İLK 3 KONTROLÜ -> ELMAS PROSU
-                else if (leagueStage === "final" && userRank <= 3) {
+                } else if (leagueStage === "final" && userRank <= 3) {
                     if (!badgePro) {
                         badgePro = true;
                         localStorage.setItem("badgePro", "true");
-                        alert(`🥇 Yeni Rozet Açıldı: Elmas Prosu! (Final İlk 3)`);
+                        alert(`🥇 Yeni Rozet Açıldı: Elmas Prosu!`);
                     }
                 }
                 
-                // DÜŞME KONTROLLERİ
                 if (userRank >= 8 && leagueStage !== "quarter") {
                     leagueStage = leagueStage === "final" ? "semi" : "quarter";
                     alert(`😭 Son 3... Bir alt lige düştün.`);
                 }
 
-                if (!isChampion && leagueStage === "final" && userRank !== 1) {
-                    alert(`Finali ${userRank}. bitirdin. Yarın tekrar dene!`);
-                }
-
-                // HERKESİ SIFIRLA
                 userXP = 0;
                 localStorage.setItem("userXP", 0);
                 localStorage.setItem("leagueStage", leagueStage);
@@ -602,7 +607,6 @@
                 lastLeagueReset = todayStr;
                 localStorage.setItem("lastLeagueReset", todayStr);
                 
-                // BOTLARA RANDOM XP KASDIR
                 botScores.forEach(bot => bot.xp = Math.floor(Math.random() * 60) + 10);
                 localStorage.setItem("botScores", JSON.stringify(botScores));
             } else if (!lastLeagueReset) {
@@ -614,16 +618,15 @@
 
         const uiTexts = {
             tr: {
-                pageTitle: "Günlük Yaşam Dil Pratiği v1.6",
+                pageTitle: "Günlük Yaşam Dil Pratiği v2.0",
                 mainTitle: "🌍 Günlük Yaşam Dil Pratiği",
-                mainDesc: "Günlük Elmas Ligleri, Prestij Sistemi ve Kademeli Rozetler!",
                 startBtn: "Derse / Teste Başla",
                 errorsBtn: "❌ Hatalarım",
                 shopBtn: "📚 Mağaza & Ödüller",
+                friendsBtn: "👥 Arkadaşlar & Ekle",
                 refillMsg: "Canın bittiği için yeni oyuna başlayamazsın!",
                 refillBtn: "3 Can Dersi Yap (Canları Yenile)",
                 backMenu: "⬅ Menü",
-                quizDefaultDesc: "Aşağıdaki günlük yaşam senaryosuna en uygun ve doğru ifadeyi seçiniz.",
                 nextBtn: "Sonraki Soru",
                 errorHeaderTitle: "❌ Yanlış Yapılan Sorular",
                 errorHeaderDesc: "Testler sırasında yanlış yaptığın çeldiricilere takıldığın soruların doğru yanıtları:",
@@ -631,13 +634,12 @@
                 correctAnswerText: "Doğru Cevap",
                 lessonDesc: "3 canını tamamen geri kazanmak için sırayla 3 pekiştirme sorusunu doğru yanıtla!",
                 lessonPrefix: "💡 Can Dersi",
-                correctMsg: "Harika, doğru çeldiriciyi aştın!",
+                correctMsg: "Tebrikler, doğru!",
                 wrongFirstMsg: "Yanlış! Çok yaklaştın, tekrar dene.",
-                wrongSecondMsg: "Üzgünüm, profesyonel çeldiriciye takıldın ve 1 canın gitti!",
+                wrongSecondMsg: "Üzgünüm, bu soruyu geçemedin",
                 outOfLivesMsg: "Canın bitti! Ana menüye dönülüyor...",
-                gameOver: "Tebrikler! Soru bankası testi bitti (+10 XP kazandın!). Puanın:",
-                blockedPlayAlert: "Canın bittiği için şu an oynayamazsın! Lütfen '3 Can Dersi Yap' butonuna basarak canları yenile.",
-                questionLabel: "Soru Bankası Soru No",
+                gameOver: "Tebrikler! Test bitti (+10 XP kazandın!). Puanın:",
+                blockedPlayAlert: "Canın bittiği için şu an oynayamazsın! Lütfen can dersi yap.",
                 shopHeading: "📚 Mağaza & Ödüller",
                 shopDesc: "7 günlük serileri tamamlayarak **10 Kitap** kazanabilir, **20 Kitap** ile **Seri Kıvılcımı** satın alabilirsin!",
                 buySparkleBtnText: "20 Kitap Karşılığı Seri Kıvılcımı Satın Al ✴️",
@@ -647,49 +649,57 @@
                 booksText: (b) => `Sahip Olunan Kitaplar: ${b} 📖`,
                 streakProgress: (s) => `7 Günlük Seri İlerlemesi: ${s % 7}/7 Gün`,
                 streakRewardMsg: "🎉 Tebrikler! 7 günlük seriyi tamamladın ve 10 Kitap ödülü kazandın!",
-                notEnoughBooks: "Yeterli kitabın yok! Seri Kıvılcımı almak için 20 kitaba ihtiyacın var.",
+                notEnoughBooks: "Yeterli kitabın yok! 20 kitaba ihtiyacın var.",
                 boughtSuccess: "Başarıyla 1 Seri Kıvılcımı satın aldın! ✴️",
                 leagueDesc: "İlk 3'e girerek üst aşamaya yüksel, Final'de 1. olarak Prestij Rozeti kazan!",
-                myProfileName: "Sen"
+                friendsHeading: "👥 Arkadaş Ekle & Listesi",
+                friendsDesc: "Arkadaşının kullanıcı adını yazarak arkadaş olarak ekle:",
+                nicknameTitle: "AD DÜZENLE / EKLE",
+                saveNicknameBtn: "Takma Adı Kaydet",
+                addFriendBtn: "Ekle",
+                noFriends: "Henüz arkadaş eklemedin."
             },
             en: {
-                pageTitle: "Daily Life Language Practice v1.6",
+                pageTitle: "Daily Life Language Practice v2.0",
                 mainTitle: "🌍 Daily Life Language Practice",
-                mainDesc: "Daily Diamond Leagues, Prestige System & Tiered Badges!",
                 startBtn: "Start Lesson / Quiz",
                 errorsBtn: "❌ My Mistakes",
                 shopBtn: "📚 Shop & Rewards",
+                friendsBtn: "👥 Friends & Add",
                 refillMsg: "You cannot start a new game because you are out of lives!",
                 refillBtn: "Take 3 Life Lessons (Refill Lives)",
                 backMenu: "⬅ Menu",
-                quizDefaultDesc: "Choose the most appropriate and accurate expression for the daily life scenario below.",
                 nextBtn: "Next Question",
                 errorHeaderTitle: "❌ Incorrectly Answered Questions",
-                errorHeaderDesc: "Correct answers to the questions where you fell for the tricky distractors:",
-                noErrors: "You have no saved mistakes yet. You're doing great!",
+                errorHeaderDesc: "Correct answers to questions where you fell for distractors:",
+                noErrors: "No saved mistakes yet. Great job!",
                 correctAnswerText: "Correct Answer",
-                lessonDesc: "Answer 3 reinforcement questions correctly in a row to fully recover your 3 lives!",
+                lessonDesc: "Answer 3 reinforcement questions correctly in a row to recover 3 lives!",
                 lessonPrefix: "💡 Life Lesson",
-                correctMsg: "Great, you beat the tricky distractor!",
+                correctMsg: "Congratulations, correct!",
                 wrongFirstMsg: "Incorrect! You were close, try again.",
-                wrongSecondMsg: "Sorry, you fell for the professional distractor and lost 1 life!",
-                outOfLivesMsg: "Out of lives! Returning to the main menu...",
-                gameOver: "Congratulations! Test finished (+10 XP earned!). Your score:",
-                blockedPlayAlert: "You cannot play right now because you are out of lives! Please click 'Take 3 Life Lessons' to refill.",
-                questionLabel: "Question Bank Item",
+                wrongSecondMsg: "Sorry, you couldn't pass this question",
+                outOfLivesMsg: "Out of lives! Returning to menu...",
+                gameOver: "Congratulations! Test finished (+10 XP). Your score:",
+                blockedPlayAlert: "Out of lives! Please complete life lessons.",
                 shopHeading: "📚 Shop & Rewards",
-                shopDesc: "Complete 7-day streaks to earn **10 Books**, and use **20 Books** to buy a **Streak Sparkle**!",
+                shopDesc: "Complete 7-day streaks to earn **10 Books**, use **20 Books** for a **Streak Sparkle**!",
                 buySparkleBtnText: "Buy Streak Sparkle for 20 Books ✴️",
                 streakBadgeText: (s) => `🔥 ${s} Days`,
                 sparkleText: (sp) => `${sp} Sparkles`,
                 badgeText: (b) => `💎${b}`,
                 booksText: (b) => `Owned Books: ${b} 📖`,
                 streakProgress: (s) => `7-Day Streak Progress: ${s % 7}/7 Days`,
-                streakRewardMsg: "🎉 Congratulations! You completed a 7-day streak and earned 10 Books reward!",
-                notEnoughBooks: "You don't have enough books! You need 20 books to buy a Streak Sparkle.",
+                streakRewardMsg: "🎉 Congratulations! Streak completed, earned 10 Books!",
+                notEnoughBooks: "Not enough books! You need 20 books.",
                 boughtSuccess: "Successfully bought 1 Streak Sparkle! ✴️",
-                leagueDesc: "Top 3 advance, finish #1 in Final to earn a Prestige Badge!",
-                myProfileName: "You"
+                leagueDesc: "Top 3 advance, finish #1 in Final for a Prestige Badge!",
+                friendsHeading: "👥 Friends & List",
+                friendsDesc: "Add friends by typing their username:",
+                nicknameTitle: "EDIT / ADD NICKNAME",
+                saveNicknameBtn: "Save Nickname",
+                addFriendBtn: "Add",
+                noFriends: "No friends added yet."
             }
         };
 
@@ -709,18 +719,19 @@
 
             document.getElementById("pageTitle").innerText = t.pageTitle;
             document.getElementById("mainTitle").innerText = t.mainTitle;
-            document.getElementById("mainDesc").innerText = t.mainDesc;
             document.getElementById("startQuizBtnText").innerText = t.startBtn;
             document.getElementById("errorsBtnText").innerText = t.errorsBtn;
             document.getElementById("shopBtnText").innerText = t.shopBtn;
+            document.getElementById("leagueBtnText").innerText = t.leagueBtn;
+            document.getElementById("friendsBtnText").innerText = t.friendsBtn;
             document.getElementById("refillMsgTitle").innerText = t.refillMsg;
             document.getElementById("refillBtnText").innerText = t.refillBtn;
             document.getElementById("backMenuBtn").innerText = t.backMenu;
             document.getElementById("errorBackBtn").innerText = t.backMenu;
             document.getElementById("shopBackBtn").innerText = t.backMenu;
             document.getElementById("leagueBackBtn").innerText = t.backMenu;
+            document.getElementById("friendsBackBtn").innerText = t.backMenu;
             document.getElementById("badgesBackBtn").innerText = t.backMenu;
-            document.getElementById("description").innerText = t.quizDefaultDesc;
             document.getElementById("nextBtn").innerText = t.nextBtn;
             document.getElementById("errorHeaderTitle").innerText = t.errorHeaderTitle;
             document.getElementById("errorHeaderDesc").innerText = t.errorHeaderDesc;
@@ -728,14 +739,15 @@
             document.getElementById("shopDesc").innerHTML = t.shopDesc;
             document.getElementById("buySparkleBtn").innerText = t.buySparkleBtnText;
             document.getElementById("leagueDesc").innerText = t.leagueDesc;
+            
+            document.getElementById("nicknameSectionTitle").innerText = t.nicknameTitle;
+            document.getElementById("saveNicknameBtn").innerText = t.saveNicknameBtn;
+            document.getElementById("friendsHeading").innerText = t.friendsHeading;
+            document.getElementById("friendsDesc").innerText = t.friendsDesc;
+            document.getElementById("addFriendActionBtn").innerText = t.addFriendBtn;
 
             updateHomeWidgets();
             updateLeagueButtonTitle();
-
-            const currentSelectedLang = document.getElementById("languageSelector").value;
-            if (document.getElementById("quizScreen").classList.contains("active")) {
-                document.getElementById("heading").innerText = rawQuizData[currentSelectedLang].heading[appLang];
-            }
         }
 
         function getLeagueStageInfo() {
@@ -760,116 +772,113 @@
             document.getElementById("leagueBtnText").innerText = `🏆 Lig & Sıralama (${stage.name})`;
         }
 
-        const rawQuizData = {
+        const poolTemplates = {
+            tr: [
+                { q: "[PLACE] konumunu kibarca nasıl sorarsınız?", options: ["Afedersiniz, [PLACE] nerede acaba?", "[PLACE] nerede?", "Hemen [PLACE] lazım.", "[PLACE] aç bana."], correct: 0 },
+                { q: "Bir restoranda [FOOD] siparişi nasıl verilir?", options: ["[PLACE_OR_FOOD] alabilir miyim lütfen?", "Bana hemen [FOOD] ver.", "[FOOD] sevmiyorum.", "[FOOD] nerede?"], correct: 0 },
+                { q: "Bir mağazada [ITEM] fiyatını nasıl sorarsınız?", options: ["[ITEM] fiyatı ne kadardır?", "[ITEM] bugün bedava mı?", "[ITEM] niye burada?", "[ITEM] giyebilir miyim?"], correct: 0 },
+                { q: "Biri sana [THING] konusunda yardım ettiğinde ne dersin?", options: ["Yardımın için çok teşekkür ederim.", "Bir daha asla yardım etme.", "[THING] nerede?", "İyi günler."], correct: 0 },
+                { q: "[EVENT] etkinliğine geç kaldığın için nasıl özür dilersin?", options: ["[EVENT] etkinliğine geç kaldığım için içtenlikle özür dilerim.", "[EVENT] niye bensiz başladı?", "[EVENT] nefret ederim.", "Herkese günaydın."], correct: 0 }
+            ],
+            en: [
+                { q: "How do you politely ask for the location of [PLACE]?", options: ["Excuse me, could you tell me where [PLACE] is?", "Where is [PLACE]?", "I want [PLACE] now.", "Open [PLACE] for me."], correct: 0 },
+                { q: "How do you order [FOOD] at a restaurant?", options: ["Can I have [FOOD], please?", "Give me [FOOD] immediately.", "Why don't you have [FOOD]?", "Is [FOOD] broken?"], correct: 0 },
+                { q: "How do you ask the price of [ITEM] in a store?", options: ["How much does [ITEM] cost?", "Is [ITEM] free today?", "Why is [ITEM] here?", "Can I wear [ITEM]?"], correct: 0 },
+                { q: "What do you say when someone helps you with [THING]?", options: ["Thank you so much for your help.", "Don't ever help me again.", "Where is [THING]?", "Goodbye now."], correct: 0 },
+                { q: "How do you apologize for being late to [EVENT]?", options: ["I sincerely apologize for being late to [EVENT].", "Why did [EVENT] start without me?", "I hate [EVENT].", "Good morning everyone."], correct: 0 }
+            ],
+            es: [
+                { q: "¿Cómo preguntas cortésmente por [PLACE] en la ciudad?", options: ["¿Podría decirme dónde está [PLACE]?", "¿Dónde está [PLACE]?", "Quiero [PLACE] ahora.", "Abre [PLACE]."], correct: 0 },
+                { q: "¿Cómo pides [FOOD] en un restaurante?", options: ["¿Me podría traer [FOOD], por favor?", "Dame [FOOD] ya.", "No me gusta [FOOD].", "¿Dónde está [FOOD]?"], correct: 0 }
+            ],
+            de: [
+                { q: "Wie fragt man höflich nach [PLACE]?", options: ["Könnten Sie mir sagen, wo [PLACE] ist?", "Wo ist [PLACE]?", "Ich will [PLACE].", "Gib mir [PLACE]."], correct: 0 }
+            ],
+            fr: [
+                { q: "Comment demandez-vous poliment [PLACE] ?", options: ["Pourriez-vous m'indiquer où se trouve [PLACE] ?", "Où est [PLACE] ?", "Je veux [PLACE].", "Au revoir."], correct: 0 }
+            ],
+            it: [
+                { q: "Come chiedi gentilmente [PLACE]?", options: ["Saprebbe dirmi dov'è [PLACE]?", "Dov'è [PLACE]?", "Voglio [PLACE].", "Ciao."], correct: 0 }
+            ],
+            ru: [
+                { q: "Как вежливо спросить где находится [PLACE]?", options: ["Скажите, пожалуйста, где находится [PLACE]?", "Где [PLACE]?", "Я хочу [PLACE].", "Пока."], correct: 0 }
+            ],
+            ko: [
+                { q: "[PLACE]의 곹을 정중하게 물어보는 방법은 무엇입니까?", options: ["[PLACE]가 어디에 있는지 알려주시겠어요?", "[PLACE]가 어디에요?", "[PLACE]를 주세요.", "안녕히 가세요."], correct: 0 }
+            ],
+            ja: [
+                { q: "[PLACE]への行き方を丁寧に尋ねる表現は？", options: ["[PLACE]はどこにあるか教えていただけますか？", "[PLACE]はどこですか？", "[PLACE]をください。", "さようなら。"], correct: 0 }
+            ]
+        };
+
+        const replacementTokens = {
+            tr: {
+                places: ["metro istasyonunun", "en yakın hastanenin", "merkezi bankanın", "havaalanı terminalinin", "müze çıkışının", "karakolun", "postanenin", "botanik bahçesinin"],
+                foods: ["bir fincan espresso", "taze portakal suyu", "bir dilim çikolatalı kek", "ızgara tavuk sandviç", "vegan pizza", "sıcak yeşil çay"],
+                items: ["bu deri ceketin", "şu dijital kameranın", "bu ahşap masanın", "kışlık montun", "koşu ayakkabısının"],
+                things: ["ağır bavullarını", "bozuk projeksiyonu", "kayıp anahtarları bulma", "market poşetlerini taşıma"],
+                events: ["sabah toplantısına", "uluslararası konferansa", "sanat atölyesine", "proje sunumuna"]
+            },
             en: {
-                heading: { tr: "English - Genişletilmiş Soru Bankası", en: "English - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Yabancı bir şehirde metro istasyonunu arıyorsunuz ve yoldan geçen kibar birine adres sormanız gerekiyor. En doğal ve doğru hitap hangisidir?", en: "You are looking for a subway station in a foreign city and need to ask a polite stranger for directions. What is the most natural approach?" }, 
-                        options: ["Excuse me, could you tell me where the nearest subway station is?", "Where is subway? Tell me now.", "I want to find subway station immediately.", "Do you know where the metro is closed?"], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Bir kafede garson masanıza gelip siparişinizi sordu. Hem kahve hem de hesap isteme ihtimalini ortadan kaldırıp net bir şekilde kahve sipariş etmek istiyorsunuz:", en: "A waiter came to your table and asked for your order. You want to clearly order coffee without causing any confusion:" }, 
-                        options: ["Can I have a cup of black coffee, please?", "I want coffee and give me the bill too.", "Where is your coffee machine?", "Do you drink coffee here?"], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Mağazada beğendiğiniz kaliteli bir montun fiyatını ve indirimde olup olmadığını öğrenmek istiyorsunuz:", en: "You want to find out the price of a jacket you liked in a store and whether it is on sale:" }, 
-                        options: ["Excuse me, how much does this jacket cost?", "Is this jacket expensive for me?", "Why is this jacket here?", "Can I wear this jacket outside?"], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Havaalanı pasaport kontrolünde görevli memur pasaportunuzla birlikte biniş kartınızı da talep ediyor. Ona doğru cevaben ne verirsiniz?", en: "At the airport passport control, the officer requests your boarding pass along with your passport. What do you hand over correctly?" }, 
-                        options: ["Here is my passport and my boarding pass.", "I lost both my passport and my ticket.", "Show me your officer card first.", "My plane is already landing."], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Arkadaşınız uzun süren zorlu bir sınavı başarıyla geçtiğini söyledi. Onun bu büyük sevincini paylaşmak için ne dersiniz?", en: "Your friend said they successfully passed a difficult exam after a long time. What do you say to share their excitement?" }, 
-                        options: ["That's fantastic news, huge congratulations!", "I am so sorry to hear that.", "Exams are always boring and long.", "See you next week at school."], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Otele giriş yapıyorsunuz, resepsiyonist oda kartınızı teslim ediyor ve size konforlu bir konaklama diliyor:", en: "You are checking into a hotel, the receptionist hands over your room card and wishes you a comfortable stay:" }, 
-                        options: ["Thank you very much, have a wonderful day.", "Give me another room key immediately.", "Where is the exit door?", "Goodbye, I am leaving now."], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Süpermarketde laktozsuz süt arıyorsunuz ama reyonlarda bulamadınız. Görevliye en kibar nasıl danışırsınız?", en: "You are looking for lactose-free milk in the supermarket but couldn't find it on the shelves. How do you politely ask the staff?" }, 
-                        options: ["Excuse me, do you know where I can find lactose-free milk?", "Bring me milk right now.", "Why don't you sell milk here?", "Is this milk expired?"], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Kalabalık bir caddede yürürken dalgınlıkla birinin telefonunu düşürmesine sebep oldunuz. Acil ve samimi özür:", en: "While walking on a crowded street, you absentmindedly caused someone to drop their phone. Urgent and sincere apology:" }, 
-                        options: ["I am so terribly sorry, let me help you pick it up.", "Thank you for dropping your phone.", "Watch out for my steps next time.", "Good afternoon to you too."], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Şık bir restoranda akşam yemeğini bitirdiniz ve ödemeyi kredi kartıyla yapmak istediğinizi belirtmek istiyorsunuz:", en: "You finished dinner at an upscale restaurant and want to state that you wish to pay by credit card:" }, 
-                        options: ["Could we have the bill, and can I pay by credit card?", "I don't have any money for this meal.", "Where is the kitchen staff?", "The food was completely raw."], correct: 0 
-                    },
-                    { 
-                        q: { tr: "Önemli bir iş toplantısına toplu taşıma gecikmesi yüzünden 10 dakika geciktiniz. İçeri girerken yapacağınız en profesyonel açıklama:", en: "You are 10 minutes late for an important business meeting due to public transit delays. The most professional statement upon entering:" }, 
-                        options: ["Please accept my apologies for being late due to traffic delays.", "I overslept because my alarm didn't ring at all.", "Why did you start the meeting without me?", "Have a great morning everyone."], correct: 0 
-                    }
-                ]
-            },
-            es: {
-                heading: { tr: "Español - Genişletilmiş Soru Bankası", en: "Spanish - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Şehir merkezinde en yakın metro istasyonunu arıyorsunuz. İspanyolca en doğru ifade:", en: "You are looking for the nearest subway station in the city center. Most accurate expression in Spanish:" }, 
-                        options: ["¿Podría decirme dónde está la estación de metro más cercana?", "¿Dónde está el metro cerrado?", "Quiero comprar billetes de tren.", "Tengo mucha hambre ahora."], correct: 0 
-                    }
-                ]
-            },
-            de: {
-                heading: { tr: "Deutsch - Genişletilmiş Soru Bankası", en: "German - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Trenden indiniz ve en yakın metro istasyonunu Almanca sormak istiyorsunuz:", en: "You got off the train and want to ask for the nearest metro station in German:" }, 
-                        options: ["Könnten Sie mir sagen, wo die nächste U-Bahn-Station ist?", "Wo ist der geschlossene Bahnhof?", "Ich möchte jetzt schlafen.", "Wie viel Uhr ist es genau?"], correct: 0 
-                    }
-                ]
-            },
-            fr: {
-                heading: { tr: "Français - Genişletilmiş Soru Bankası", en: "French - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Fransa'da en yakın metro istasyonunu sormak istiyorsunuz:", en: "You want to ask for the nearest metro station in France:" }, 
-                        options: ["Excusez-moi, pourriez-vous m'indiquer la station de métro la plus proche ?", "Où est le train qui ne marche pas ?", "Je voudrais dormir ici.", "Quelle est la date d'aujourd'hui ?"], correct: 0 
-                    }
-                ]
-            },
-            it: {
-                heading: { tr: "Italiano - Genişletilmiş Soru Bankası", en: "Italian - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Roma'da metro istasyonunu İtalyanca kibarca sormak istiyorsunuz:", en: "You want to politely ask for the metro station in Rome in Italian:" }, 
-                        options: ["Scusi, saprebbe dirmi dov'è la stazione della metropolitana più vicina?", "Dov'è il treno che non parte?", "Voglio mangiare una pizza adesso.", "Che tempo fa oggi a Roma?"], correct: 0 
-                    }
-                ]
-            },
-            ru: {
-                heading: { tr: "Русский - Genişletilmiş Soru Bankası", en: "Russian - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "Rusya'da en yakın metro istasyonunu sormak istiyorsunuz:", en: "You want to ask for the nearest metro station in Russia:" }, 
-                        options: ["Скажите, пожалуйста, где находится ближайшая станция метро?", "Где закрытый вокзал города?", "Я хочу купить билет на самолет.", "Который сейчас час?"], correct: 0 
-                    }
-                ]
-            },
-            ko: {
-                heading: { tr: "한국어 - Genişletilmiş Soru Bankası", en: "Korean - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "한국에서 가장 가까운 지하철역을 정중하게 물어보고 싶습니다:", en: "You want to politely ask for the nearest subway station in Korea:" }, 
-                        options: ["실례합니다, 가장 가까운 지하철역이 어디에 있는지 알려주시겠어요?", "지하철역이 왜 문을 닫았나요?", "지금 몇 시인지 아십니까?", "배가 고파서 음식을 먹고 싶어요."], correct: 0 
-                    }
-                ]
-            },
-            ja: {
-                heading: { tr: "日本語 - Genişletilmiş Soru Bankası", en: "Japanese - Expanded Question Bank" },
-                questions: [
-                    { 
-                        q: { tr: "日本で一番近い地下鉄の駅を丁寧に尋ねたい場合:", en: "When you want to politely ask for the nearest subway station in Japan:" }, 
-                        options: ["すみません、一番近い地下鉄の駅はどこにあるか教えていただけますか？", "地下鉄の駅はどこで閉まりますか？", "今何時ですか、教えてください。", "お腹が空いたのでレストランに行きます。"], correct: 0 
-                    }
-                ]
+                places: ["the subway station", "the nearest hospital", "the central bank", "the airport terminal", "the museum exit", "the police station", "the post office", "the botanical garden"],
+                foods: ["a cup of espresso", "fresh orange juice", "a slice of chocolate cake", "a grilled chicken sandwich", "vegan pizza", "hot green tea"],
+                items: ["this leather jacket", "that digital camera", "this wooden table", "the winter coat", "the running shoes"],
+                things: ["your heavy luggage", "the broken projector", "finding the lost keys", "carrying the grocery bags"],
+                events: ["the morning meeting", "the international conference", "the art workshop", "the project presentation"]
             }
         };
+
+        let usedQuestionSignatures = new Set();
+
+        function generateUniqueQuestion(interfaceLang, quizLang) {
+            const sourceKey = (interfaceLang === 'tr') ? 'tr' : quizLang;
+            const templates = poolTemplates[sourceKey] || poolTemplates["en"];
+            let templateIndex = Math.floor(Math.random() * templates.length);
+            let template = templates[templateIndex];
+
+            const tokenSet = replacementTokens[quizLang] || replacementTokens["en"];
+            const trTokenSet = replacementTokens["tr"];
+
+            let pIndex = Math.floor(Math.random() * tokenSet.places.length);
+            let fIndex = Math.floor(Math.random() * tokenSet.foods.length);
+            let iIndex = Math.floor(Math.random() * tokenSet.items.length);
+            let thIndex = Math.floor(Math.random() * tokenSet.things.length);
+            let evIndex = Math.floor(Math.random() * tokenSet.events.length);
+
+            let qText = template.q
+                .replace("[PLACE]", interfaceLang === 'tr' ? trTokenSet.places[pIndex] : tokenSet.places[pIndex])
+                .replace("[FOOD]", interfaceLang === 'tr' ? trTokenSet.foods[fIndex] : tokenSet.foods[fIndex])
+                .replace("[ITEM]", interfaceLang === 'tr' ? trTokenSet.items[iIndex] : tokenSet.items[iIndex])
+                .replace("[THING]", interfaceLang === 'tr' ? trTokenSet.things[thIndex] : tokenSet.things[thIndex])
+                .replace("[EVENT]", interfaceLang === 'tr' ? trTokenSet.events[evIndex] : tokenSet.events[evIndex]);
+            
+            if (usedQuestionSignatures.has(qText)) {
+                return generateUniqueQuestion(interfaceLang, quizLang);
+            }
+            usedQuestionSignatures.add(qText);
+
+            const targetTemplates = poolTemplates[quizLang] || poolTemplates["en"];
+            let targetTemplate = targetTemplates[templateIndex] || targetTemplates[0];
+
+            let opts = targetTemplate.options.map(opt => opt
+                .replace("[PLACE]", tokenSet.places[pIndex])
+                .replace("[FOOD]", tokenSet.foods[fIndex])
+                .replace("[ITEM]", tokenSet.items[iIndex])
+                .replace("[THING]", tokenSet.things[thIndex])
+                .replace("[EVENT]", tokenSet.events[evIndex])
+                .replace("[PLACE_OR_FOOD]", tokenSet.foods[fIndex])
+            );
+            
+            let indexedOptions = opts.map((opt, idx) => ({ text: opt, isCorrect: idx === targetTemplate.correct }));
+            let shuffledOptions = shuffleArray(indexedOptions);
+            let newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
+
+            return {
+                questionText: qText,
+                options: shuffledOptions.map(o => o.text),
+                correct: newCorrectIndex
+            };
+        }
 
         const lifeLessonPool = [
             {
@@ -906,14 +915,6 @@
                 [arr[i], arr[j]] = [arr[j], arr[i]];
             }
             return arr;
-        }
-
-        function updateLivesDisplay() {
-            let hearts = "";
-            for (let i = 0; i < lives; i++) {
-                hearts += "❤️";
-            }
-            document.getElementById("livesDisplay").innerText = hearts;
         }
 
         function updateMenuState() {
@@ -957,27 +958,16 @@
             currentIndex = 0;
             score = 0;
             wrongAttemptsOnCurrentQuestion = 0;
+            
+            usedQuestionSignatures.clear();
 
-            const allPool = rawQuizData[currentLang].questions;
-            const shuffledPool = shuffleArray(allPool);
-            const selectedPool = shuffledPool.slice(0, 10);
+            activeQuestions = [];
+            for (let i = 0; i < 10; i++) {
+                activeQuestions.push(generateUniqueQuestion(appLang, currentLang));
+            }
 
-            activeQuestions = selectedPool.map(item => {
-                let indexedOptions = item.options.map((opt, idx) => ({ text: opt, isCorrect: idx === item.correct }));
-                let shuffledOptions = shuffleArray(indexedOptions);
-                let newCorrectIndex = shuffledOptions.findIndex(o => o.isCorrect);
-
-                return {
-                    q: item.q,
-                    options: shuffledOptions.map(o => o.text),
-                    correct: newCorrectIndex
-                };
-            });
-
-            document.getElementById("heading").innerText = rawQuizData[currentLang].heading[appLang];
             document.getElementById("scoreBox").innerText = "";
             document.getElementById("nextBtn").style.display = "none";
-            updateLivesDisplay();
 
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById("quizScreen").classList.add("active");
@@ -1002,7 +992,7 @@
             } else {
                 container.innerHTML = userErrors.map(err => `
                     <div class="error-item">
-                        <div class="error-q">❓ ${err.question[appLang]}</div>
+                        <div class="error-q">❓ ${err.questionText}</div>
                         <div class="error-ans">✅ ${t.correctAnswerText}: ${err.correctAnswer}</div>
                     </div>
                 `).join('');
@@ -1029,7 +1019,7 @@
 
             document.getElementById("leagueHeading").innerText = `🏆 ${stage.name} Sıralaması`;
 
-            let rankingList = [...botScores, { name: t.myProfileName, xp: userXP, isUser: true }];
+            let rankingList = [...botScores, { name: userNickname, xp: userXP, isUser: true }];
             rankingList.sort((a, b) => b.xp - a.xp);
 
             container.innerHTML = rankingList.map((item, idx) => {
@@ -1044,37 +1034,74 @@
             }).join('');
         }
 
+        function openFriendsScreen() {
+            document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+            document.getElementById("friendsScreen").classList.add("active");
+
+            document.getElementById("nicknameInput").value = userNickname === "Sen" ? "" : userNickname;
+            renderFriendsList();
+        }
+
+        function saveNickname() {
+            const inputVal = document.getElementById("nicknameInput").value.trim();
+            if (inputVal !== "") {
+                userNickname = inputVal;
+                localStorage.setItem("userNickname", userNickname);
+                alert(appLang === 'tr' ? "Takma adınız başarıyla kaydedildi!" : "Nickname saved successfully!");
+            } else {
+                alert(appLang === 'tr' ? "Lütfen geçerli bir ad girin." : "Please enter a valid name.");
+            }
+        }
+
+        function addFriend() {
+            const friendInput = document.getElementById("friendUsernameInput");
+            const friendName = friendInput.value.trim();
+            const t = uiTexts[appLang];
+
+            if (friendName !== "") {
+                if (!friendList.includes(friendName)) {
+                    friendList.push(friendName);
+                    localStorage.setItem("friendList", JSON.stringify(friendList));
+                    friendInput.value = "";
+                    renderFriendsList();
+                } else {
+                    alert(appLang === 'tr' ? "Bu kişi zaten arkadaş listende!" : "This user is already in your friends list!");
+                }
+            }
+        }
+
+        function renderFriendsList() {
+            const container = document.getElementById("friendsContainer");
+            const t = uiTexts[appLang];
+
+            if (friendList.length === 0) {
+                container.innerHTML = `<p style="text-align: center; color: #666; font-style: italic; font-size: 13px;">${t.noFriends}</p>`;
+            } else {
+                container.innerHTML = friendList.map((friend, idx) => `
+                    <div class="league-row">
+                        <span>👤 ${friend}</span>
+                        <button type="button" onclick="removeFriend(${idx})" style="background: #e74c3c; color: white; border: none; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 11px;">Sil</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function removeFriend(index) {
+            friendList.splice(index, 1);
+            localStorage.setItem("friendList", JSON.stringify(friendList));
+            renderFriendsList();
+        }
+
         function openBadgesScreen() {
             document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
             document.getElementById("badgesScreen").classList.add("active");
 
             const container = document.getElementById("badgesContainer");
-
             const badgesList = [
-                {
-                    title: "💎 Elmas Çırağı",
-                    desc: appLang === 'tr' ? "Elmas çeyrek finalinde ilk 3 içine girerek açılır." : "Unlocked by finishing in the top 3 of Diamond Quarter-Final.",
-                    unlocked: badgeApprentice,
-                    icon: "🥉"
-                },
-                {
-                    title: "👑 Elmas Ustası",
-                    desc: appLang === 'tr' ? "Yarı finallerde ilk 3'te bitirilince açılır." : "Unlocked by finishing in the top 3 of Semi-Finals.",
-                    unlocked: badgeMaster,
-                    icon: "🥈"
-                },
-                {
-                    title: "⚡ Elmas Prosu",
-                    desc: appLang === 'tr' ? "Elmas finallerinde ilk 3'te bitirilince açılır." : "Unlocked by finishing in the top 3 of Diamond Finals.",
-                    unlocked: badgePro,
-                    icon: "🥇"
-                },
-                {
-                    title: "🔥 Elmas Gücü",
-                    desc: appLang === 'tr' ? "Elmas finalleri 1. olarak bitirilince açılır." : "Unlocked by finishing 1st in Diamond Finals.",
-                    unlocked: badgePower,
-                    icon: "💎"
-                }
+                { title: "💎 Elmas Çırağı", desc: appLang === 'tr' ? "Elmas çeyrek finalinde ilk 3 içine girerek açılır." : "Top 3 in Quarter-Final.", unlocked: badgeApprentice, icon: "🥉" },
+                { title: "👑 Elmas Ustası", desc: appLang === 'tr' ? "Yarı finallerde ilk 3'te bitirilince açılır." : "Top 3 in Semi-Finals.", unlocked: badgeMaster, icon: "🥈" },
+                { title: "⚡ Elmas Prosu", desc: appLang === 'tr' ? "Elmas finallerinde ilk 3'te bitirilince açılır." : "Top 3 in Finals.", unlocked: badgePro, icon: "🥇" },
+                { title: "🔥 Elmas Gücü", desc: appLang === 'tr' ? "Elmas finalleri 1. olarak bitirilince açılır." : "1st place in Finals.", unlocked: badgePower, icon: "💎" }
             ];
 
             container.innerHTML = badgesList.map(b => {
@@ -1127,8 +1154,6 @@
             document.getElementById("lifeLessonScreen").classList.add("active");
             
             const t = uiTexts[appLang];
-            document.getElementById("lessonHeading").innerText = `${t.lessonPrefix} (${currentLessonStep}/3)`;
-            document.getElementById("lessonDescText").innerText = t.lessonDesc;
             document.getElementById("lessonFeedback").innerText = "";
 
             const randomIndex = Math.floor(Math.random() * lifeLessonPool.length);
@@ -1164,20 +1189,19 @@
                 feedback.style.color = "#28a745";
 
                 if (currentLessonStep < 3) {
-                    feedback.innerText = appLang === 'tr' ? `Doğru! ${currentLessonStep}. ders tamamlandı. Sonraki derse geçiliyor...` : `Correct! Lesson ${currentLessonStep} completed. Moving to next lesson...`;
+                    feedback.innerText = appLang === 'tr' ? `Doğru! ${currentLessonStep}. ders tamamlandı...` : `Correct! Lesson ${currentLessonStep} completed...`;
                     currentLessonStep++;
                     setTimeout(loadNextLessonStep, 1800);
                 } else {
-                    feedback.innerText = appLang === 'tr' ? "Tebrikler! 3 dersi de başarıyla tamamladın ve 3 can kazandın!" : "Congratulations! You successfully completed all 3 lessons and earned 3 lives!";
+                    feedback.innerText = appLang === 'tr' ? "Tebrikler! 3 can kazandın!" : "Congratulations! Earned 3 lives!";
                     lives = 3;
                     setTimeout(goHome, 2000);
                 }
             } else {
                 btns[selectedIndex].classList.add("wrong");
                 btns[correctIndex].classList.add("correct");
-                btns.forEach(b => b.disabled = true);
                 feedback.style.color = "#e74c3c";
-                feedback.innerText = appLang === 'tr' ? "Yanlış cevap! Bu ders adımı baştan denenecek..." : "Wrong answer! This lesson step will be retried...";
+                feedback.innerText = appLang === 'tr' ? "Yanlış! Baştan deneniyor..." : "Wrong! Retrying...";
                 setTimeout(loadNextLessonStep, 2200);
             }
         }
@@ -1189,11 +1213,9 @@
 
             const data = activeQuestions[currentIndex];
             const container = document.getElementById("quizContainer");
-            const t = uiTexts[appLang];
-            const qPrefix = t.questionLabel;
 
             container.innerHTML = `
-                <div class="question-title">${qPrefix} ${currentIndex + 1}/${activeQuestions.length}: ${data.q[appLang]}</div>
+                <div class="question-title">${data.questionText}</div>
                 <div class="options-list">
                     ${data.options.map((opt, index) => `
                         <button type="button" class="option-btn" onclick="checkAnswer(${index})">${opt}</button>
@@ -1212,9 +1234,9 @@
                 buttons[selectedOptionIndex].classList.add("correct");
                 buttons.forEach(btn => btn.disabled = true);
                 feedbackMsg.style.color = "#28a745";
-                feedbackMsg.innerText = t.correctMsg;
+                feedbackMsg.innerText = "Tebrikler, doğru!";
                 score++;
-                checkGameFlow();
+                checkGameFlow(true);
             } else {
                 wrongAttemptsOnCurrentQuestion++;
 
@@ -1228,20 +1250,19 @@
                     buttons[data.correct].classList.add("correct");
                     buttons.forEach(btn => btn.disabled = true);
                     
-                    if (!userErrors.some(e => e.question.tr === data.q.tr)) {
+                    if (!userErrors.some(e => e.questionText === data.questionText)) {
                         userErrors.push({
-                            question: data.q,
+                            questionText: data.questionText,
                             correctAnswer: data.options[data.correct]
                         });
                     }
 
                     lives--;
-                    updateLivesDisplay();
 
                     feedbackMsg.style.color = "#e74c3c";
                     if (lives > 0) {
                         feedbackMsg.innerText = t.wrongSecondMsg;
-                        checkGameFlow();
+                        checkGameFlow(false);
                     } else {
                         feedbackMsg.innerText = t.outOfLivesMsg;
                         setTimeout(goHome, 2000); 
@@ -1250,16 +1271,17 @@
             }
         }
 
-        function checkGameFlow() {
+        function checkGameFlow(isCorrectAnswer) {
             const totalQuestions = activeQuestions.length;
             const t = uiTexts[appLang];
             if (currentIndex < totalQuestions - 1) {
                 document.getElementById("nextBtn").style.display = "block";
             } else {
-                userXP += 10;
-                localStorage.setItem("userXP", userXP);
-
-                handleStreakAfterCompletion();
+                if (isCorrectAnswer) {
+                    userXP += 10;
+                    localStorage.setItem("userXP", userXP);
+                    handleStreakAfterCompletion();
+                }
                 document.getElementById("scoreBox").innerText = `${t.gameOver} ${score} / ${totalQuestions}`;
                 setTimeout(goHome, 3000);
             }
